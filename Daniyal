@@ -10,12 +10,13 @@ void board(int brow, int bcol , int barr[brow][bcol]){
     }
 }
 
-int vd(int vdrow , int vdcol){// 1111 = okay , 77 = not okay
-    if (arr[vdrow][vdcol] == 0){
+
+int vd(int vdrow , int vdcol , int vdarr[vdrow][vdcol]){// 1111 = okay , 77 = not okay
+    if (vdarr[vdrow][vdcol] == 0){
         return 1111;
     }
     
-    else if (arr[vdrow][vdcol] != 0){
+    else if (vdarr[vdrow][vdcol] != 0){
         return 77;
     }
 
@@ -23,7 +24,8 @@ int vd(int vdrow , int vdcol){// 1111 = okay , 77 = not okay
 
 
 
-int sp(int sprow , int spcol , int spdir , int splen , int sptype){//1010 = okay , 444 = not okay.  sp = ship placement spdir =(0 = right, 1 = down, 2 = left, 3 = up) , splen=ship length
+
+int sp(int sprow , int spcol , int spdir , int splen , int sptype , int sparr[sprow][spcol]){//1010 = okay , 444 = not okay.  sp = ship placement spdir =(0 = right, 1 = down, 2 = left, 3 = up) , splen=ship length
     //sptype type of ship that has splen e.g thre can be two ship if same length so this is to identify them
     int spi,spj;
     
@@ -37,13 +39,13 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            if (vd(sprow, spcol + spi) == 77)
+            if (vd(sprow, spcol + spi,sparr) == 77)
                 return 444;
         }
 
         for (spi = 0; spi < splen; spi++)
         {
-            arr[sprow][spcol + spi] = (splen*10)+sptype;
+            sparr[sprow][spcol + spi] = (splen*10)+sptype;
         }
         break;
 
@@ -55,13 +57,13 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            if (vd(sprow + spi, spcol) == 77)
+            if (vd(sprow + spi, spcol,sparr) == 77)
                 return 444;
         }
 
         for (spi = 0; spi < splen; spi++)
         {
-            arr[sprow + spi][spcol] = splen;
+            sparr[sprow + spi][spcol] = splen;
         }
         break;
 
@@ -73,13 +75,13 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            if (vd(sprow, spcol - spi) == 77)
+            if (vd(sprow, spcol - spi,sparr) == 77)
                 return 444;
         }
 
         for (spi = 0; spi < splen; spi++)
         {
-            arr[sprow][spcol - spi] = splen;
+            sparr[sprow][spcol - spi] = splen;
         }
         break;
 
@@ -91,13 +93,13 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            if (vd(sprow - spi, spcol) == 77)
+            if (vd(sprow - spi, spcol,sparr) == 77)
                 return 444;
         }
 
         for (spi = 0; spi < splen; spi++)
         {
-            arr[sprow - spi][spcol] = splen;
+            sparr[sprow - spi][spcol] = splen;
         }
         break;
 
@@ -110,15 +112,16 @@ return 1010;
 
 }
 
-/*void ms(int msrow , int mscol ,int msarr[10][10]){//hit miss , hit ship
+
+void ms(int msrow , int mscol ,int msarr[10][10]){//hit miss , hit ship
     if (msarr[msrow][mscol]==0){
     msarr[msrow][mscol]= -1;}
 
     else if ((msarr[msrow][mscol]!=0) ||(msarr[msrow][mscol]!=-1) ){
-    msarr[msrow][mscol]= 99;}
+    msarr[msrow][mscol]= (99*10) + msarr[msrow][mscol];}
 
     
-}*/
+}
 
 
 void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship print
@@ -132,11 +135,14 @@ void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship 
         printf("\n");
     }}
 
+//destroyer submarine 
+
+
 int main(){
     board(10,10,arr);//initailize the board
     int a;
     spir(10,10,arr);
-    a = sp(5,5,1,4,0);
+    a = sp(5,5,1,4,0,arr);
     printf("\n\n\n %d",a);
     spir(10,10,arr);
     int b = 1;
