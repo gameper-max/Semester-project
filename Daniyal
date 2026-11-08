@@ -4,7 +4,7 @@ int arr[10][10];
 void board(int brow, int bcol , int barr[brow][bcol]){
     int i,j;
     for (i = 0; i<=9; i++){
-        for (j = 0; j<=19; j++){
+        for (j = 0; j<=9; j++){
             barr[i][j] = 0;
         }
     }
