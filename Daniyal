@@ -63,7 +63,7 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            sparr[sprow + spi][spcol] = splen;
+            sparr[sprow + spi][spcol] = (splen*10)+sptype;
         }
         break;
 
@@ -81,7 +81,7 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            sparr[sprow][spcol - spi] = splen;
+            sparr[sprow][spcol - spi] = (splen*10)+sptype;
         }
         break;
 
@@ -99,7 +99,7 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            sparr[sprow - spi][spcol] = splen;
+            sparr[sprow - spi][spcol] = (splen*10)+sptype;
         }
         break;
 
@@ -130,13 +130,13 @@ void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship 
     for (i = 0; i<=9; i++){
         
         for (j = 0; j<=9; j++){
-            printf("%d  ",spiarr[i][j]);
+            printf("%d\t",spiarr[i][j]);
     }
         printf("\n");
     }}
 
 //destroyer submarine 
-
+//{//moiz
 int moiz_s(int msrow, int mscol, int ms_dir , int msarr[msrow][mscol]){//submarine
     sp(msrow,mscol,ms_dir,5,0,msarr);
 }
@@ -158,14 +158,14 @@ int moiz_d2(int md2row, int md2col, int md2_dir , int md2arr[md2row][md2col]){//
 int moiz_f(int mfrow, int mfcol, int mf_dir , int mfarr[mfrow][mfcol]){//Frigates
     sp(mfrow,mfcol,mf_dir,2,0,mfarr);
 }
-
+//}
 
 int main(){
     board(10,10,arr);//initailize the board
     int a;
     spir(10,10,arr);
-    a = sp(5,5,1,4,0,arr);
-    printf("\n\n\n %d",a);
+    moiz_f(5,5,0,arr);
+    //printf("\n\n\n %d",a);
     spir(10,10,arr);
     int b = 1;
     int c,d;
