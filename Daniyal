@@ -110,7 +110,7 @@ return 1010;
 
 }
 
-void ms(int msrow , int mscol ,int msarr[10][10]){//hit miss , hit ship
+/*void ms(int msrow , int mscol ,int msarr[10][10]){//hit miss , hit ship
     if (msarr[msrow][mscol]==0){
     msarr[msrow][mscol]= -1;}
 
@@ -118,7 +118,7 @@ void ms(int msrow , int mscol ,int msarr[10][10]){//hit miss , hit ship
     msarr[msrow][mscol]= 99;}
 
     
-}
+}*/
 
 
 void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship print
