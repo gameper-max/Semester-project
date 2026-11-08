@@ -1,11 +1,11 @@
 #include<stdio.h>//2 3 3 4 5
 int arr[10][10];
 
-void board(){
+void board(int brow, int bcol , int barr[brow][bcol]){
     int i,j;
     for (i = 0; i<=9; i++){
         for (j = 0; j<=19; j++){
-            arr[i][j] = 0;
+            barr[i][j] = 0;
         }
     }
 }
@@ -20,6 +20,8 @@ int vd(int vdrow , int vdcol){// 1111 = okay , 77 = not okay
     }
 
     }
+
+
 
 int sp(int sprow , int spcol , int spdir , int splen , int sptype){//1010 = okay , 444 = not okay.  sp = ship placement spdir =(0 = right, 1 = down, 2 = left, 3 = up) , splen=ship length
     //sptype type of ship that has splen e.g thre can be two ship if same length so this is to identify them
@@ -119,24 +121,24 @@ void ms(int msrow , int mscol ,int msarr[10][10]){//hit miss , hit ship
 }
 
 
-void spir(){//array of ship print
+void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship print
     int i,j;
     printf("\n\n");
     for (i = 0; i<=9; i++){
         
         for (j = 0; j<=9; j++){
-            printf("%d  ",arr[i][j]);
+            printf("%d  ",spiarr[i][j]);
     }
         printf("\n");
     }}
 
 int main(){
-    board();//initailize the board
+    board(10,10,arr);//initailize the board
     int a;
-    spir();
+    spir(10,10,arr);
     a = sp(5,5,1,4,0);
     printf("\n\n\n %d",a);
-    spir();
+    spir(10,10,arr);
     int b = 1;
     int c,d;
     while(b==1){
@@ -144,7 +146,7 @@ int main(){
         scanf("%d",&c);
         scanf("%d",&d);
         ms(c,d,arr);
-        spir();
+        spir(10,10,arr);
     }
 
 return 0;
