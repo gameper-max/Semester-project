@@ -190,7 +190,7 @@ int moiz_f(int mfrow, int mfcol, int mf_dir , int mfarr[mfrow][mfcol]){//Frigate
 int main(){
     int saee[3][5];
     sad_2(saee);
-   /*board(10,10,arr);//initailize the board
+   board(10,10,arr);//initailize the board
     int a;
     spir(10,10,arr);
     moiz_f(5,5,0,arr);
@@ -205,7 +205,7 @@ int main(){
         ms(c,d,arr);
         spir(10,10,arr);
     }
-*/
+
 return 0;
 
 }
