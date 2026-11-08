@@ -137,6 +137,28 @@ void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship 
 
 //destroyer submarine 
 
+int moiz_s(int msrow, int mscol, int ms_dir , int msarr[msrow][mscol]){//submarine
+    sp(msrow,mscol,ms_dir,5,0,msarr);
+}
+
+
+int moiz_a(int marow, int macol, int ma_dir , int maarr[marow][macol]){//aircraft crariier
+    sp(marow,macol,ma_dir,4,0,maarr);
+}
+
+
+int moiz_d(int mdrow, int mdcol, int md_dir , int mdarr[mdrow][mdcol]){//destroyer 1st type
+    sp(mdrow,mdcol,md_dir,3,0,mdarr);
+}
+
+int moiz_d2(int md2row, int md2col, int md2_dir , int md2arr[md2row][md2col]){//destroyer 2nd type
+    sp(md2row,md2col,md2_dir,3,1,md2arr);
+}
+
+int moiz_f(int mfrow, int mfcol, int mf_dir , int mfarr[mfrow][mfcol]){//Frigates
+    sp(mfrow,mfcol,mf_dir,2,0,mfarr);
+}
+
 
 int main(){
     board(10,10,arr);//initailize the board
