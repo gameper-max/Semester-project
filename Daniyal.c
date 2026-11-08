@@ -2,17 +2,27 @@
 int arr[10][10];
 
 int sad_2(int sad[3][5]){ // SAeed
-    sad[0][0] = 50;sad[1][0] = 5; 
+    sad[0][0] = 50;sad[0][1] = 5; 
     //submarine
-    sad[0][1] = 40;sad[1][1] = 4;
+    sad[1][0] = 40;sad[1][1] = 4;
     //aircraft carrier
-    sad[0][2] = 30;sad[1][2] = 3;
+    sad[2][0] = 30;sad[2][1] = 3;
     //destroyer 1
-    sad[0][3] = 31;sad[1][3] = 3;
+    sad[3][0] = 31;sad[3][1] = 3;
     //destroyer 2
-    sad[0][4] = 20;sad[1][4] = 2;
+    sad[4][0] = 20;sad[4][1] = 2;
     //frigates
-}
+
+    int i,j;
+    printf("\n\n");
+    for (i = 0; i<5; i++){
+        
+        for (j = 0; j<2; j++){
+            printf("%d\t",sad[i][j]);
+    }
+        printf("\n");
+    }}
+
 
 
 
@@ -178,7 +188,9 @@ int moiz_f(int mfrow, int mfcol, int mf_dir , int mfarr[mfrow][mfcol]){//Frigate
 
 
 int main(){
-    board(10,10,arr);//initailize the board
+    int saee[3][5];
+    sad_2(saee);
+   /*board(10,10,arr);//initailize the board
     int a;
     spir(10,10,arr);
     moiz_f(5,5,0,arr);
@@ -193,7 +205,7 @@ int main(){
         ms(c,d,arr);
         spir(10,10,arr);
     }
-
+*/
 return 0;
 
 }
