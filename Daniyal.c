@@ -1,36 +1,6 @@
-#include<stdio.h>//2 3 3 4 5
-int arr[2][10][10];
-/*
-int sad_2(int sad[3][5]){ // SAeed
-    sad[0][0] = 50;sad[0][1] = 5; 
-    //submarine
-    sad[1][0] = 40;sad[1][1] = 4;
-    //aircraft carrier
-    sad[2][0] = 30;sad[2][1] = 3;
-    //destroyer 1
-    sad[3][0] = 31;sad[3][1] = 3;
-    //destroyer 2
-    sad[4][0] = 20;sad[4][1] = 2;
-    //frigates
+#include<stdio.h>
 
-    int i,j;
-    printf("\n\n");
-    for (i = 0; i<5; i++){
-        
-        for (j = 0; j<2; j++){
-            printf("%d\t",sad[i][j]);
-    }
-        printf("\n");
-    }}
-*/
-
-
-int sae(int sat , int s_no , int saliv, int sadir, int saarr2[2][5][3]){
-    //sat = 0 = red, sa = 1 blue 
-    saarr2[sat][s_no][0] = saliv;
-    saarr2[sat][s_no][1] = sadir;
-}
-
+ 
 
 void board(int barr[2][10][10]){
     int i,j,k;
@@ -45,7 +15,17 @@ void board(int barr[2][10][10]){
 }
 
 
-void s3d_2d(int s3z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
+void s3d_2d_sa(int s3mz , int s3mzarr[2][5][3] , int s2mzarr[5][3]){
+    int i,j;
+    
+    for (i = 0; i<=4; i++){
+        
+        for (j = 0; j<=2; j++){
+            s2mzarr[i][j] = s3mzarr[s3mz][i][j];
+}}}
+
+
+void  s3d_2d_ma(int s3z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
      int i,j;
     //printf("\n\n");
     for (i = 0; i<=9; i++){
@@ -70,10 +50,8 @@ int vd(int vdrow , int vdcol , int vdarr[10][10]){// 1111 = okay , 77 = not okay
     }
 
 
-
-
-int sp(int sprow , int spcol , int spdir , int splen , int sptype , int sparr[10][10]){//1010 = okay , 444 = not okay.  sp = ship placement spdir =(0 = right, 1 = down, 2 = left, 3 = up) , splen=ship length
-    //sptype type of ship that has splen e.g thre can be two ship if same length so this is to identify them
+int sp(int sprow , int spcol , int spdir , int splen , int sparr[10][10]){//1010 = okay , 444 = not okay.  sp = ship placement spdir =(0 = right, 1 = down, 2 = left, 3 = up) , splen=ship length
+    //  type of ship that has splen e.g thre can be two ship if same length so this is to identify them
     int spi,spj;
     
 //if situation is to validte that the ship is not going out of board
@@ -92,7 +70,7 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            sparr[sprow][spcol + spi] = (splen*10)+sptype;
+            sparr[sprow][spcol + spi] =  splen ;
         }
         break;
 
@@ -110,7 +88,7 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            sparr[sprow + spi][spcol] = (splen*10)+sptype;
+            sparr[sprow + spi][spcol] =  splen ;
         }
         break;
 
@@ -128,7 +106,7 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            sparr[sprow][spcol - spi] = (splen*10)+sptype;
+            sparr[sprow][spcol - spi] =  splen ;
         }
         break;
 
@@ -146,7 +124,7 @@ switch (spdir)
 
         for (spi = 0; spi < splen; spi++)
         {
-            sparr[sprow - spi][spcol] = (splen*10)+sptype;
+            sparr[sprow - spi][spcol] =  splen ;
         }
         break;
 
@@ -160,18 +138,7 @@ return 1010;
 }
 
 
-void ms(int msrow , int mscol ,int msarr[10][10]){//hit miss , hit ship
-    if (msarr[msrow][mscol]==0){
-    msarr[msrow][mscol]= -1;}
-
-    else if ((msarr[msrow][mscol]!=0) ||(msarr[msrow][mscol]!=-1) ){
-    msarr[msrow][mscol]= (99*10) + msarr[msrow][mscol];}
-
-    
-}
-
-
-void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship print
+void spir(int spiarr[10][10]){//array of ship print
     int i,j;
     printf("\n\n");
     for (i = 0; i<=9; i++){
@@ -183,8 +150,112 @@ void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship 
     }}
 
 
+void user_da(int uarr[10][10], int usae[5][3]){
+    int urows, ucols;
+    int dir_s;//direction of submarine  
+    int dir_sps;
+    printf("\nEnter the Cordinate of Submarine LEn 5");
+    
+    do{
+    
+    getcord(&urows,&ucols);
+    dir_s = getdir();
+    dir_sps = sp(urows,ucols,dir_s,5,uarr);
+    
+    if (dir_sps == 444){
+        printf("\nEror");
+    }
+    }while(dir_sps == 444);
+    spir(uarr);
 
-void s2d_3d(int s2z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
+    int urowac, ucolac;
+    int dir_ac;//direction of aircraft carrier
+    int dir_spac;
+    printf("\nEnter The cordinates OF Aircraft Craierr Len 4 : ");
+    
+    do{
+    
+        getcord(&urowac,&ucolac);
+    dir_ac = getdir();
+    dir_spac = sp(urowac,ucolac,dir_ac,4,uarr);
+    
+    if (dir_spac == 444){
+        printf("\nEror");
+    }
+    }while(dir_spac == 444);
+    spir(uarr);
+
+    int urowd, ucold;
+    int dir_d;//direction of destroyer
+    int dir_spd;
+    printf("\nEnter The cordinates OF Destoryer Len 3 : ");
+    
+    do{
+    
+        getcord(&urowd,&ucold);
+    dir_d = getdir();
+    dir_spd = sp(urowd,ucold,dir_d,3,uarr);
+    
+    if (dir_spd == 444){
+        printf("\nEror...\n");
+    }
+    }while(dir_spd == 444);
+    
+    spir(uarr);
+
+    int urowf, ucolf;
+    int dir_f;//direction of frigates
+    int dir_spf;
+    printf("\nEnter The cordinates OF Frigates Len 2 : ");
+    
+    do{
+    
+        getcord(&urowf,&ucolf);
+    dir_f = getdir();
+    dir_spf = sp(urowf,ucolf,dir_f,2,uarr);
+    
+    if (dir_spf == 444){
+        printf("\nEror");
+    }
+    }while(dir_spf == 444);
+    spir(uarr);
+
+
+    //int usae[5];
+    usae[0][2] = dir_s;
+    usae[1][2] = dir_ac;
+    usae[2][2] = dir_d;
+    usae[3][2] = dir_f;
+
+}
+
+
+
+void sae(int saarr[5][3]){
+    //sae arr for direction live and Unique id 
+    //unique id at x axis 0 live at x axis 1 and direction at x axis 2
+
+    for(int j = 0;j <4;j++){
+        saarr[j][0] = (5-j)*10;
+        saarr[j][1] = 5-j;
+    
+}
+    
+}
+
+
+void s2d_3d_sa(int s2mz , int s3mzarr[2][5][3] , int s2mzarr[5][3]){
+    int i,j;
+    
+    for (i = 0; i<=4; i++){
+        
+        for (j = 0; j<=2; j++){
+            s3mzarr[s2mz][i][j] = s2mzarr[i][j];
+}}}
+
+
+
+void  s2d_3d_ma(int s2z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
      int i,j;
     //printf("\n\n");
     for (i = 0; i<=9; i++){
@@ -196,45 +267,27 @@ void s2d_3d(int s2z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
     }
 }
 
-    /*
-//destroyer submarine 
-//{//moiz
-int moiz_s(int msrow, int mscol, int ms_dir , int msarr[msrow][mscol]){//submarine
-    sp(msrow,mscol,ms_dir,5,0,msarr);
-}
-
-
-int moiz_a(int marow, int macol, int ma_dir , int maarr[marow][macol]){//aircraft crariier
-    sp(marow,macol,ma_dir,4,0,maarr);
-}
-
-
-int moiz_d(int mdrow, int mdcol, int md_dir , int mdarr[mdrow][mdcol]){//destroyer 1st type
-    sp(mdrow,mdcol,md_dir,3,0,mdarr);
-}
-
-//int moiz_d2(int md2row, int md2col, int md2_dir , int md2arr[md2row][md2col]){//destroyer 2nd type
-//    sp(md2row,md2col,md2_dir,3,1,md2arr);
-//}
-
-int moiz_f(int mfrow, int mfcol, int mf_dir , int mfarr[mfrow][mfcol]){//Frigates
-    sp(mfrow,mfcol,mf_dir,2,0,mfarr);
-}
-//}*/
-
 
 
 int main(){
-    int arr3[2][10][10];//3D array
+    
+    int arr3[2][10][10];
+    int arr2_red[10][10];
+    //int arr2_blu[10][10];
+    int sar[2][5][3];
+    int sar_red[5][3];
+    int sar_blu[5][3];
+
+
     board(arr3);
-    int arr2red[10][10];//z = 0
-    int arr2blu[10][10];//z = 1
-    s3d_2d(0,arr3,arr2red);
-    s3d_2d(1,arr3,arr2blu);
-    //here moiz function so that sp is called 
+    
+    s3d_2d_ma(0,arr3,arr2_red);
+    spir(arr2_red);
+    user_da(arr2_red,sar_red);   
+    int sarr[2][5][3];
+        
 
+    return 0;
 
-
-return 0;
 
 }
