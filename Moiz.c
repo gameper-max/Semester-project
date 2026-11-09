@@ -30,7 +30,7 @@ void getcord( int *row, int *col) {
       } while(inputc < 1 || inputc > 10)  ;
 
    }
-   *row=inputr - 'A'; // return *row+*col shift void to int
+   *row=inputr - 'A'; 
    *col=inputc - 1; 
    
    } 
