@@ -35,7 +35,7 @@ void getcord( int *row, int *col) {
    
    } 
 
-
+// function that gets the direction from the user
 int getdir() {  
     int inputd; 
     printf(" please enter your direction { 0=Right,1=Down,2=Left,3=Up}\n");  
@@ -51,7 +51,7 @@ int getdir() {
     
 }
 
-  
+  //function that displays the players board,
  void displayplayerboard(int dpbarr[2][10][10])  {  
    //dpbz = layer
      int i; 
@@ -77,7 +77,7 @@ int getdir() {
   }
  } 
 
-
+//function that displays the users board
 #include <stdio.h> 
  void displaycpuboard(int dcbarr[2][10][10]) { 
    
