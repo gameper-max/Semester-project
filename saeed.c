@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<string.h>
+
 int *ship_id; // most imp step global pointer toa cccess everytwhere
 int *ship_sunk=0;
 int *ship_size;//danail will tell column no in arr_ship_details
