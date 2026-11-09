@@ -49,7 +49,37 @@ int getdir() {
     
  
     
-}    
+}
+
+
+ void displayplayerboard()  {  
+   
+     int i; 
+     int j;  
+     printf("    1  2  3  4  5  6  7  8  9  10\n");
+  for(i=0;i<10;i++)
+     {printf("%c  ",'A'+i);
+    for(j=0;j<10;j++) {   
+         ; 
+        if( arr[0][i][j] == 0) { 
+            printf(" . ");
+        } else if ( arr[0][i][j]>=1 && arr[0][i][j]<=5) { 
+            printf(" S "); 
+        } else if ( arr[0][i][j]==99) { 
+            printf(" X "); 
+
+        } else if ( arr[0][i][j]== -1) { 
+            printf(" O ");
+        }
+         
+
+    } printf("\n");
+  }
+ } 
+
+
+
+
 int main() { 
     int dir; 
     dir = getdir(); 
