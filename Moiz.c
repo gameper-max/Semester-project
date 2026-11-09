@@ -78,6 +78,27 @@ int getdir() {
  } 
 
 
+#include <stdio.h> 
+ void displaycpuboard(int dcbarr[2][10][10]) { 
+   
+    int i; 
+    int j; 
+    printf("   1  2  3  4  5  6  7  8  9  10\n"); 
+    for(i=0;i<10;i++) {
+        printf("%c ",'A'+i);
+        for(j=0;j<10;j++) { 
+            if(dcbarr[1][i][j]==0) {
+                printf(" . ");
+            } if(dcbarr[1][i][j]==-1) { 
+                printf(" O ");
+            } if(dcbarr[1][i][j]==99) {
+                printf(" X ");
+            } if(dcbarr[1][i][j]>=1 && dcbarr[1][i][j]<=5 ) { 
+                printf(" . ");
+            }
+        } printf("\n");
+    }
+ } 
 
 
 
