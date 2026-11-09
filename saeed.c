@@ -5,7 +5,7 @@ int *ship_id; // most imp step global pointer toa cccess everytwhere
 int *ship_sunk=0;
 int *ship_size;//danail will tell column no in arr_ship_details
 bool  *turn_change_flag=false,*game_end=false;
-int arr_location[][][];//danial provides these
+
 int arr_location[][][];//danial provides these
 int arr_ship_details[][][];// danial provides 
 // concept if ship hit write x otherwise  write -1 and 
