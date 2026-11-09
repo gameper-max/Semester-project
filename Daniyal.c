@@ -236,7 +236,7 @@ void sae(int saarr[5][3]){
     //unique id at x axis 0 live at x axis 1 and direction at x axis 2
 
     for(int j = 0;j <4;j++){
-        saarr[j][0] = (5-j)*10;
+        saarr[j][0] = (5-j);
         saarr[j][1] = 5-j;
     
 }
