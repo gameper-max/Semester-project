@@ -1,6 +1,6 @@
 #include<stdio.h>//2 3 3 4 5
-int arr[10][10];
-
+int arr[2][10][10];
+/*
 int sad_2(int sad[3][5]){ // SAeed
     sad[0][0] = 50;sad[0][1] = 5; 
     //submarine
@@ -22,21 +22,43 @@ int sad_2(int sad[3][5]){ // SAeed
     }
         printf("\n");
     }}
+*/
 
 
+int sae(int sat , int s_no , int saliv, int sadir, int saarr2[2][5][3]){
+    //sat = 0 = red, sa = 1 blue 
+    saarr2[sat][s_no][0] = saliv;
+    saarr2[sat][s_no][1] = sadir;
+}
 
 
-void board(int brow, int bcol , int barr[brow][bcol]){
-    int i,j;
-    for (i = 0; i<=9; i++){
-        for (j = 0; j<=9; j++){
-            barr[i][j] = 0;
+void board(int barr[2][10][10]){
+    int i,j,k;
+    for (k = 0; k<2; k++){
+        for (i = 0; i<=9; i++){
+            for (j = 0; j<=9; j++){
+                barr[k][i][j] = 0;
         }
     }
 }
 
+}
 
-int vd(int vdrow , int vdcol , int vdarr[vdrow][vdcol]){// 1111 = okay , 77 = not okay
+
+void s3d_2d(int s3z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
+     int i,j;
+    //printf("\n\n");
+    for (i = 0; i<=9; i++){
+        
+        for (j = 0; j<=9; j++){
+        s2arr[i][j] = s3zarr[s3z][i][j];      
+    }
+        //printf("\n");
+    }
+}
+
+
+int vd(int vdrow , int vdcol , int vdarr[10][10]){// 1111 = okay , 77 = not okay
     if (vdarr[vdrow][vdcol] == 0){
         return 1111;
     }
@@ -50,7 +72,7 @@ int vd(int vdrow , int vdcol , int vdarr[vdrow][vdcol]){// 1111 = okay , 77 = no
 
 
 
-int sp(int sprow , int spcol , int spdir , int splen , int sptype , int sparr[sprow][spcol]){//1010 = okay , 444 = not okay.  sp = ship placement spdir =(0 = right, 1 = down, 2 = left, 3 = up) , splen=ship length
+int sp(int sprow , int spcol , int spdir , int splen , int sptype , int sparr[10][10]){//1010 = okay , 444 = not okay.  sp = ship placement spdir =(0 = right, 1 = down, 2 = left, 3 = up) , splen=ship length
     //sptype type of ship that has splen e.g thre can be two ship if same length so this is to identify them
     int spi,spj;
     
@@ -160,6 +182,21 @@ void spir(int spirow , int spicol , int spiarr[spirow][spicol]){//array of ship 
         printf("\n");
     }}
 
+
+
+void s2d_3d(int s2z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
+     int i,j;
+    //printf("\n\n");
+    for (i = 0; i<=9; i++){
+        
+        for (j = 0; j<=9; j++){
+        s3zarr[s2z][i][j] = s2arr[i][j];      
+    }
+        //printf("\n");
+    }
+}
+
+    /*
 //destroyer submarine 
 //{//moiz
 int moiz_s(int msrow, int mscol, int ms_dir , int msarr[msrow][mscol]){//submarine
@@ -176,35 +213,27 @@ int moiz_d(int mdrow, int mdcol, int md_dir , int mdarr[mdrow][mdcol]){//destroy
     sp(mdrow,mdcol,md_dir,3,0,mdarr);
 }
 
-int moiz_d2(int md2row, int md2col, int md2_dir , int md2arr[md2row][md2col]){//destroyer 2nd type
-    sp(md2row,md2col,md2_dir,3,1,md2arr);
-}
+//int moiz_d2(int md2row, int md2col, int md2_dir , int md2arr[md2row][md2col]){//destroyer 2nd type
+//    sp(md2row,md2col,md2_dir,3,1,md2arr);
+//}
 
 int moiz_f(int mfrow, int mfcol, int mf_dir , int mfarr[mfrow][mfcol]){//Frigates
     sp(mfrow,mfcol,mf_dir,2,0,mfarr);
 }
-//}
+//}*/
 
 
 
 int main(){
-    int saee[3][5];
-    sad_2(saee);
-   board(10,10,arr);//initailize the board
-    int a;
-    spir(10,10,arr);
-    moiz_f(5,5,0,arr);
-    //printf("\n\n\n %d",a);
-    spir(10,10,arr);
-    int b = 1;
-    int c,d;
-    while(b==1){
-        printf("Enter the cordinates(row x column) : ");
-        scanf("%d",&c);
-        scanf("%d",&d);
-        ms(c,d,arr);
-        spir(10,10,arr);
-    }
+    int arr3[2][10][10];//3D array
+    board(arr3);
+    int arr2red[10][10];//z = 0
+    int arr2blu[10][10];//z = 1
+    s3d_2d(0,arr3,arr2red);
+    s3d_2d(1,arr3,arr2blu);
+    //here moiz function so that sp is called 
+
+
 
 return 0;
 
