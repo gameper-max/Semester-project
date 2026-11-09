@@ -52,8 +52,9 @@ int getdir() {
 }
 
 
- void displayplayerboard()  {  
-   
+#include <stdio.h>   
+ void displayplayerboard(int dpbz, int dpbarr[2][10][10])  {  
+   //dpbz = layer
      int i; 
      int j;  
      printf("    1  2  3  4  5  6  7  8  9  10\n");
@@ -61,14 +62,14 @@ int getdir() {
      {printf("%c  ",'A'+i);
     for(j=0;j<10;j++) {   
          ; 
-        if( arr[0][i][j] == 0) { 
+        if( dpbarr[dpbz][i][j] == 0) { 
             printf(" . ");
-        } else if ( arr[0][i][j]>=1 && arr[0][i][j]<=5) { 
+        } else if ( dpbarr[dpbz][i][j]>=1 && dpbarr[0][i][j]<=5) { 
             printf(" S "); 
-        } else if ( arr[0][i][j]==99) { 
+        } else if ( dpbarr[dpbz][i][j]==99) { 
             printf(" X "); 
 
-        } else if ( arr[0][i][j]== -1) { 
+        } else if ( dpbarr[dpbz][i][j]== -1) { 
             printf(" O ");
         }
          
@@ -76,6 +77,9 @@ int getdir() {
     } printf("\n");
   }
  } 
+
+
+
 
 
 
