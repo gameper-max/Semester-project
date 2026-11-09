@@ -101,6 +101,10 @@ int getdir() {
  } 
 
 
+void randomcoordinate(int *row, int *col, int arr[10][10]) { 
+    do {*row=rand() % 10; 
+    *col=rand() %10 ;} while(arr[*row][*col]!=99 || arr[*row][*col]!=-1); 
+}
 
 
 
