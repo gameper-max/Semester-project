@@ -1,5 +1,7 @@
 #include<stdio.h>
-
+#include <sys/time.h>
+#include<stdlib.h>
+#include<windows.h>
  
 
 void board(int barr[2][10][10]){
@@ -265,6 +267,17 @@ void  s2d_3d_ma(int s2z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
     }
         //printf("\n");
     }
+}
+
+
+
+
+
+
+unsigned get_microseconds() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000000) + tv.tv_usec;
 }
 
 
