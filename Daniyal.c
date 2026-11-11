@@ -1,7 +1,8 @@
 #include<stdio.h>
-#include <sys/time.h>
+// #include <sys/time.h>
+
 #include<stdlib.h>
-#include<windows.h>
+// #include<windows.h>
  
 
 void board(int barr[2][10][10]){
@@ -274,10 +275,180 @@ void  s2d_3d_ma(int s2z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
 
 
 
-unsigned get_microseconds() {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return (tv.tv_sec * 1000000) + tv.tv_usec;
+
+
+int dir_ai(){
+    int d_ai;
+
+    srand(get_microseconds());
+    Sleep(2);
+    d_ai = rand()%4;
+
+    return d_ai;}
+    
+
+
+
+void sp_ai(int sairow, int saicol, int sdir, int sa_len, int saiarr[10][10]){
+    // int sdir;
+    int mx = 3;
+    int check;
+
+do{
+
+    rc(&sairow, &saicol);
+    // sdir = dir_ai();
+
+    check = 0;
+
+do{
+
+    { //ai right ;
+    if ( (sdir == 0) && (saicol+(sa_len-1) < 10)){
+        for(int i = 0 ; i<sa_len; i++){
+            if (saiarr[sairow][saicol+i] == 0){
+                    check = 100;}
+
+            else {  
+                    //check = 0;
+                    sdir = 1;}
+        }
+    }
+
+    else{
+        sdir = 1;
+    }
+
+    if (check == 100){
+        for (int j = 0 ; j <sa_len ; j++){
+            saiarr[sairow][saicol+j] = sa_len;
+        }
+    }
+}
+
+
+
+    { //ai down ;
+    if ( (sdir == 1) && (sairow+(sa_len-1) < 10)){
+        for(int i = 0 ; i<sa_len; i++){
+            if (saiarr[sairow+i][saicol] == 0){
+                    check = 101;}
+
+            else {  
+                    //check = 0;
+                    sdir = 2;}
+        }
+    }
+
+    else{
+        sdir = 2;
+    }
+
+    if (check == 101){
+        for (int j = 0 ; j <sa_len ; j++){
+            saiarr[sairow+j][saicol] = sa_len;
+        }
+    }
+}
+
+
+
+    { //ai left ;
+    if ( (sdir == 2) && (saicol-(sa_len-1) >= 0)){
+        for(int i = 0 ; i<sa_len; i++){
+            if (saiarr[sairow][saicol-i] == 0){
+                    check = 102;}
+
+            else {  
+                    //check = 0;
+                    sdir = 3;}
+        }
+    }
+
+    else{
+        sdir = 3;
+    }
+
+    if (check == 102){
+        for (int j = 0 ; j <sa_len ; j++){
+            saiarr[sairow][saicol+j] = sa_len;
+        }
+    }
+}
+
+
+
+    { //ai up ;
+    if ( (sdir == 2) && (sairow-(sa_len-1) >= 0)){
+        for(int i = 0 ; i<sa_len; i++){
+            if (saiarr[sairow-i][saicol] == 0){
+                    check = 103;}
+
+            else {  
+                    check = check + 1;
+                    sdir = 0;}
+        }
+    }
+
+    else{
+        check = check + 1;
+        sdir = 0;
+    }
+
+    if (check == 103){
+        for (int j = 0 ; j <sa_len ; j++){
+            saiarr[sairow][saicol+j] = sa_len;
+        }
+    }
+}
+
+}while(check < 2);//all direction check
+
+
+}while(check = 0);//when all direction = false get new cordinates
+
+}
+
+
+
+void sp_af(int spafarr[10][10]){//all ship
+{// len 5 = submarine
+    int sp_afsrow, sp_afscol, sp_afsdir;
+    sp_afsdir = dir_ai();
+
+    sp_ai(sp_afsrow, sp_afscol, sp_afsdir, 5, spafarr);
+}
+
+
+
+{// len 4  = aircraft carier
+    int sp_afarow, sp_afacol, sp_afadir;
+    sp_afadir = dir_ai();
+
+    sp_ai(sp_afarow, sp_afacol, sp_afadir , 4, spafarr);
+}
+
+
+
+
+{// len 3 = destroyer
+    int sp_afdrow, sp_afdcol, sp_afddir;
+    sp_afddir = dir_ai();
+
+    sp_ai(sp_afdrow, sp_afdcol, sp_afddir , 3, spafarr);
+}
+
+
+
+{// len 2 = frigates
+    int sp_affrow, sp_affcol, sp_affdir;
+    sp_affdir = dir_ai();
+
+    sp_ai(sp_affrow, sp_affcol, sp_affdir , 3, spafarr);
+}
+
+
+
 }
 
 
