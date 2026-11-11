@@ -1,5 +1,11 @@
 #include <stdio.h>  
 #include <ctype.h> 
+#include <stdio.h>
+#include<stdlib.h>
+#include<windows.h>
+#include <sys/time.h>
+
+
 
 void getcord( int *row, int *col) { 
    printf(" please enter your row for e.g. (B)\n");  
@@ -101,9 +107,25 @@ int getdir() {
  } 
 
 
-void randomcoordinate(int *row, int *col, int arr[10][10]) { 
-    do {*row=rand() % 10; 
-    *col=rand() %10 ;} while(arr[*row][*col]!=99 || arr[*row][*col]!=-1); 
+
+
+unsigned get_microseconds() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000000) + tv.tv_usec;
+}
+
+
+void rc(int *rc_row , int *rc_col){
+    srand(get_microseconds());
+    *rc_row = rand()%10;
+    Sleep(2);
+    *rc_col = rand()%10;
+    Sleep(2);
+}
+
+void random_cordinate(int *rac_row , int *rac_col, int rac_arr[10][10]){
+    do { rc(rac_row,rac_col);}while(rac_arr[*rac_row][*rac_col] != 99 || rac_arr[*rac_row][*rac_col] != -1 );
 }
 
 
