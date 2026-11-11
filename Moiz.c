@@ -84,7 +84,7 @@ int getdir() {
  } 
 
 //function that displays the users board
-#include <stdio.h> 
+
  void displaycpuboard(int dcbarr[2][10][10]) { 
    
     int i; 
