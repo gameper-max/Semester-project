@@ -84,11 +84,13 @@ void manipulate_arrlocation(){
              
              // i for inavlid target(either overlapping or out of bound ) , h for hit target and w for water 
                /*liten call correct */hit_input_mechanism(player_no);/*most impcorrection add parametres paramatres*/
-                if (arr_location[player_no][rows][columns]==0){
+                if (arr_location[player_no][rows][columns]==0){ 
+                  printf(" Commander you missed the target. Recalibrate!\n");
                arr_location[player_no][rows][columns]=-1;
                turn_change_flag =true;
 
-          }else if(arr_location[player_no][rows][columns]>0 &&arr_location[player_no][rows][columns]<=5){
+          }else if(arr_location[player_no][rows][columns]>0 &&arr_location[player_no][rows][columns]<=5){ 
+            printf(" BULLSEYE! you hit the enemy ship")
              ship_id=arr_location[player_no][rows][columns];
             
             
@@ -98,7 +100,8 @@ void manipulate_arrlocation(){
             arr_location[player_no][rows][columns]=99;
 
               arr_ship_details[player_no][ship_id - 1][ship_size]-=1;
-              if(arr_ship_details[player_no][ship_id - 1][ship_size]==0){
+            o  if(arr_ship_details[player_no][ship_id - 1][ship_size]==0){ 
+               printf(" You sunk their ship! congrats commander\n");
                 ship_sunk++;
               }
               
