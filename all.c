@@ -202,9 +202,9 @@ void sae(int saarr[5][3]){
     //sae arr for direction live and Unique id 
     //unique id at x axis 0 live at x axis 1 and direction at x axis 2
 
-    for(int j = 0;j <4;j++){
-        saarr[j][0] = (5-j)*10;
-        saarr[j][1] = 5-j;
+    for(int j = 2;j <=5;j++){
+        saarr[j][0] = (j)*10;
+        saarr[j][1] = j;
     
 }
     
@@ -421,10 +421,10 @@ void user_da(int uarr[10][10], int usae[5][3]){
 
     sae(usae);
     //int usae[5];
-    usae[0][2] = dir_s;
-    usae[1][2] = dir_ac;
-    usae[2][2] = dir_d;
-    usae[3][2] = dir_f;
+    usae[0][2] = dir_f;
+    usae[1][2] = dir_d;
+    usae[2][2] = dir_ac;
+    usae[3][2] = dir_s;
 
 }
 
@@ -573,10 +573,10 @@ void ai_da(int spafarr[10][10] , int aisae[5][3]){//all ship
 
     sae(aisae);
     //int aisae[5];
-    aisae[0][2] = sp_aifsdir;
-    aisae[1][2] = sp_afadir;
-    aisae[2][2] = sp_afddir;
-    aisae[3][2] = sp_affdir;
+    aisae[0][2] = sp_affdir;
+    aisae[1][2] = sp_afddir;
+    aisae[2][2] = sp_afadir;
+    aisae[3][2] = sp_aifsdir;
 
 
 }
