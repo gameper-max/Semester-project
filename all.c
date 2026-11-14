@@ -848,6 +848,14 @@ int main(){
     s3d_2d_sa(0,arr_ship_details,arr_ship_details_red);
     s3d_2d_sa(1,arr_ship_details,arr_ship_details_blu);
 
+        while(!game_end){
+        manipulate_arrlocation();
+        if(!game_end){
+            turn_change();
+        }
+    }
+
+    
     return 0;
 
 
