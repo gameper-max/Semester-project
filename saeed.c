@@ -1,48 +1,70 @@
 #include<stdio.h>
 #include<string.h>
+#include <stdbool.h>
+int ship_id; // most imp step global pointer toa cccess everytwhere
+int ship_sunk=0;
+int ship_size=1;//danail will tell column no in arr_ship_details
+int PLAYER_ID = 0;
+bool  turn_change_flag, game_end=false;
+int arr_location[2][10][10];//danial provides these
 
-int *ship_id; // most imp step global pointer toa cccess everytwhere
-int *ship_sunk=0;
-int *ship_size;//danail will tell column no in arr_ship_details
-bool  *turn_change_flag=false,*game_end=false;
-
-int arr_location[][][];//danial provides these
-int arr_ship_details[][][];// danial provides 
+int arr_ship_details[2][5][3];// danial provides 
 // concept if ship hit write x otherwise  write -1 and 
 // manipulate it in main  arr_location
 // if locatrion already 99 or -1 do again thrpugh a flagcheck
 // if cell 0 or any number btw 0 and 9 thren do hit or miss 
 // turn base system 
-void hit_input_mechanism(arr_location,sizeof(arr_location));
-int hit_input_rows();//gets row user hits 
-int hit_input_columns();//gets colums user hits
-void manipulate_arrlocation(hit_input_rows,hit_input_columns,int arr_location,sizeof(arr_location),char*cell_status);
+
+int rows;//gets row user hits 
+int columns;            //gets colums user hits
+
 // take input modulele for hit to get thrpughh getcoords() provided by moiz
 //  hit_coords sepertae them using kast and first digit mod logic
+// --- FUNCTION PROTOTYPES ---
 
-int main(){
+// Moiz's  cord generator's prototype 
+void getcord(int *r, int *c);
+void random_cordinate(int *r, int *c);
 
+// Saeed's game_engine's prototypes for all functions 
+void getcord_mechanism(int PLAYER_ID);
+void hit_input_mechanism(int player_no);
+bool check_allship_sunk(int player_no);
+int winner_declare(int PLAYER_ID);
+void turn_change();
+void manipulate_arrlocation();
 
-      
+ 
+void getcord_mechanism(int PLAYER_ID) {  
+    switch(PLAYER_ID) { 
+        case 0: getcord(&rows,&columns);    
+        break;
+        case 1: random_cordinate(&rows,&columns); 
+        break;
+    }
+
 }
-void  hit_input_mechanism(int arr_location,sizeof(arr_location),int *rows/*write &rows in parametre */,int *columns/*similar*/,int player_no){
-    bool is_input=True;
-     
-    while(is_input== True){
-              //  imp*** supposed five ships here be aware!!!!!! ****** imp
+ 
+void  hit_input_mechanism(int player_no){
+    bool is_input=true;
+    
+     getcord_mechanism(PLAYER_ID);
+    while(is_input== true){
+              //  imp supposed five ships here be aware!!!!!!  imp
         if(arr_location[player_no][rows][columns] >=0 && arr_location[player_no][rows][columns] <=5 ){
                 is_input= false;
      
       
-        }else{
-            *rows=hit_input_rows();
-            *columns=hit_input_columns();
+        }else{ 
+            getcord_mechanism(PLAYER_ID); 
+
+           
 
         }
       
 }
 }
-int hit_input_rows(){
+/*int hit_input_rows(){       
     int user_input=getcoords();
     int rows =user_input%10;
   
@@ -52,51 +74,97 @@ int hit_input_rows(){
 int hit_input_columns(){
     user_input/=10;
     int columns=user_input%10;
-}  //&cell_status and &rows and &columns
-void manipulate_arrlocation(int arr_location,sizeof(arr_location),char *cell_status,player_no){
-  // i for inavlid target(either overlapping or out of bound ) , h for hit target and w for water 
-    /*liten call correct */hit_input_mechanism();/**most imp***correction add parametres paramatres*/
-       
+}  // &rows and &columns / */
+void manipulate_arrlocation(){
+  // i for inavlid target(eiher overlapping or out of bound ) , h for hit target and w for water 
+    /*liten call correct  most impcorrection add parametres paramatres */
+        turn_change_flag=false;
+        int player_no =!PLAYER_ID;
          do {
-                if (arr_location[player_no][*rows][*columns]==0){
-               arr_location[player_no][*rows][*columns]=-1;
-               *turn_change_flag =true;
+             
+             // i for inavlid target(either overlapping or out of bound ) , h for hit target and w for water 
+               /*liten call correct */hit_input_mechanism(player_no);/*most impcorrection add parametres paramatres*/
+                if (arr_location[player_no][rows][columns]==0){
+               arr_location[player_no][rows][columns]=-1;
+               turn_change_flag =true;
 
-          }elseif(arr_location[player_no][*rows][*columns]>0 &&arr_location[player_no][*rows][*columns]<5){
-             *ship_id=arr_location[player_no][*rows][*columns];
+          }else if(arr_location[player_no][rows][columns]>0 &&arr_location[player_no][rows][columns]<=5){
+             ship_id=arr_location[player_no][rows][columns];
             
             
             
             
             
-            arr_location[player_no][*rows][*columns]=99;
+            arr_location[player_no][rows][columns]=99;
 
-              arr_ship_details[player_no][*ship_id][*ship_size]-=;
+              arr_ship_details[player_no][ship_id - 1][ship_size]-=1;
+              if(arr_ship_details[player_no][ship_id - 1][ship_size]==0){
+                ship_sunk++;
+              }
               
           }
-         }while(check_allship_sunk( player_id, *ship_id)|| turn_change_flag==true);             
+         }while(!check_allship_sunk( player_no) &&  turn_change_flag==false);             
              
     
-if (check_allship_sunk( player_id, *ship_id)){
-    *game_end=true;
+if (check_allship_sunk( player_no)){
+    game_end=true;
+    winner_declare(PLAYER_ID);
+
 }
 
          
 
 
 }
-// later initIALIZE PLAYER_ID AND SHIP)ID ACCORIDING TO INDEX USED BY DAINAL IN MAIN
+// later initIALIZEPLAYER_ID AND SHIP)ID ACCORIDING TO INDEX USED BY DAINAL IN MAIN
 // concept to make or acccess ship_id at that  point
 //ship_size = ship_id 
-bool  check_allship_sunk(int player_id,int *ship_id){
-   int flag=true
-   for(int i=0 =;i<5;i++){
+bool  check_allship_sunk(int player_no){
+   int flag=true;
+   for(int i=0 ;i<5;i++){
 
-    if (arr_ship_details[player_id][i][*ship_size]== 0){
-          *ship_sunk++;
+    if (arr_ship_details[player_no][i][ship_size]== 0){
+          
    }else{
       flag =false;
    }
 }
    return flag;
+}
+int  winner_declare(int PLAYER_ID){
+    int winnner;
+    
+       switch(PLAYER_ID){
+        case 0: printf("You are winner");
+               winner=0;
+               break;
+        case 1: printf("BOT is winnner ");
+               winner =1;
+               break;
+
+       
+
+    }
+    return winner ;
+}
+
+void turn_change(){
+    if (turn_change_flag==true){
+        switch(PLAYER_ID){
+        case 0: PLAYER_ID=1;
+        break;
+        case 1:PLAYER_ID=0;
+        break;
+
+       } 
+    }
+    
+}
+int main(){
+    while(!game_end){
+        manipulate_arrlocation();
+        if(!game_end){
+            turn_change();
+        }
+    }
 }
