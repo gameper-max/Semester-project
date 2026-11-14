@@ -51,7 +51,7 @@ void  hit_input_mechanism(int player_no){
      getcord_mechanism(PLAYER_ID);
     while(is_input== true){
               //  imp supposed five ships here be aware!!!!!!  imp
-        if(arr_location[player_no][rows][columns] >=0 && arr_location[player_no][rows][columns] <=5 ){
+        if( arr_location[player_no][rows][columns] ==0 || (arr_location[player_no][rows][columns] >=2 && arr_location[player_no][rows][columns] <=5 )){
                 is_input= false;
      
       
@@ -84,14 +84,16 @@ void manipulate_arrlocation(){
              
              // i for inavlid target(either overlapping or out of bound ) , h for hit target and w for water 
                /*liten call correct */hit_input_mechanism(player_no);/*most impcorrection add parametres paramatres*/
-                if (arr_location[player_no][rows][columns]==0){ 
-                  printf(" Commander you missed the target. Recalibrate!\n");
+                if (arr_location[player_no][rows][columns]==0){
+                   printf(" Commander you missed the target. Recalibrate!\n");
                arr_location[player_no][rows][columns]=-1;
+
                turn_change_flag =true;
 
-          }else if(arr_location[player_no][rows][columns]>0 &&arr_location[player_no][rows][columns]<=5){ 
-            printf(" BULLSEYE! you hit the enemy ship")
+          }else if(arr_location[player_no][rows][columns]>1 &&arr_location[player_no][rows][columns]<=5){
+              printf(" BULLSEYE! you hit the enemy ship");
              ship_id=arr_location[player_no][rows][columns];
+
             
             
             
@@ -99,9 +101,9 @@ void manipulate_arrlocation(){
             
             arr_location[player_no][rows][columns]=99;
 
-              arr_ship_details[player_no][ship_id - 1][ship_size]-=1;
-            o  if(arr_ship_details[player_no][ship_id - 1][ship_size]==0){ 
-               printf(" You sunk their ship! congrats commander\n");
+              arr_ship_details[player_no][ship_id - 2][ship_size]-=1;
+              if(arr_ship_details[player_no][ship_id - 2][ship_size]==0){
+                printf(" You sunk their ship! congrats commander\n");
                 ship_sunk++;
               }
               
@@ -124,7 +126,7 @@ if (check_allship_sunk( player_no)){
 //ship_size = ship_id 
 bool  check_allship_sunk(int player_no){
    int flag=true;
-   for(int i=0 ;i<5;i++){
+   for(int i=0 ;i<4;i++){
 
     if (arr_ship_details[player_no][i][ship_size]== 0){
           
