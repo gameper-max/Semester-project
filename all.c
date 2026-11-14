@@ -735,6 +735,7 @@ void manipulate_arrlocation(){
              // i for inavlid target(either overlapping or out of bound ) , h for hit target and w for water 
                /*liten call correct */hit_input_mechanism(player_no);/*most impcorrection add parametres paramatres*/
                 if (arr_location[player_no][rows][columns]==0){
+                    printf(" Commander you missed the target. Recalibrate!\n");
                arr_location[player_no][rows][columns]=-1;
                turn_change_flag =true;
 
