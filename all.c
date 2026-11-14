@@ -11,6 +11,9 @@
     int arr_ship_details[2][5][3];
     int arr_ship_details_red[5][3];
     int arr_ship_details_blu[5][3];
+    
+
+    
 
 //moiz
 
@@ -131,7 +134,8 @@ void rc(int *rc_row , int *rc_col){
 
 
 void random_cordinate(int *rac_row , int *rac_col){//pop
-    do { rc(rac_row,rac_col);}while(arr2_blu[*rac_row][*rac_col] == 99 || arr_location[1][*rac_row][*rac_col] == -1 );
+  do { rc(rac_row,rac_col);}while(arr_location[0][*rac_row][*rac_col] == 99 || arr_location[0][*rac_row][*rac_col] == -1 );
+
 }
 
 
@@ -651,14 +655,15 @@ void  s2d_3d_ma(int s2z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
 }*/
 
 
+#include<stdio.h>
+#include<string.h>
+#include <stdbool.h>
 int ship_id; // most imp step global pointer toa cccess everytwhere
 int ship_sunk=0;
 int ship_size=1;//danail will tell column no in arr_ship_details
 int PLAYER_ID = 0;
 bool  turn_change_flag, game_end=false;
-//int arr_location[2][10][10];//danial provides these
-
-//int arr_ship_details[2][5][3];// danial provides 
+ 
 // concept if ship hit write x otherwise  write -1 and 
 // manipulate it in main  arr_location
 // if locatrion already 99 or -1 do again thrpugh a flagcheck
@@ -673,8 +678,8 @@ int columns;            //gets colums user hits
 // --- FUNCTION PROTOTYPES ---
 
 // Moiz's  cord generator's prototype 
-//void getcord(int *r, int *c);
-//void random_cordinate(int *r, int *c);//pop
+void getcord(int *r, int *c);
+void random_cordinate(int *r, int *c);
 
 // Saeed's game_engine's prototypes for all functions 
 void getcord_mechanism(int PLAYER_ID);
@@ -701,7 +706,7 @@ void  hit_input_mechanism(int player_no){
      getcord_mechanism(PLAYER_ID);
     while(is_input== true){
               //  imp supposed five ships here be aware!!!!!!  imp
-        if(arr_location[player_no][rows][columns] >=0 && arr_location[player_no][rows][columns] <=5 ){
+        if( arr_location[player_no][rows][columns] ==0 || (arr_location[player_no][rows][columns] >=2 && arr_location[player_no][rows][columns] <=5 )){
                 is_input= false;
      
       
@@ -733,13 +738,40 @@ void manipulate_arrlocation(){
          do {
              
              // i for inavlid target(either overlapping or out of bound ) , h for hit target and w for water 
+             if (PLAYER_ID == 0) {
+                
+                printf("\n--- ENEMY WATERS ---\n");
+                displaycpuboard(arr_location);
+                printf("\n--- YOUR FLEET ---\n");
+                 displayplayerboard(arr_location);
+              }
+              
+
                /*liten call correct */hit_input_mechanism(player_no);/*most impcorrection add parametres paramatres*/
                 if (arr_location[player_no][rows][columns]==0){
+                    switch(PLAYER_ID){
+                        case 0:   printf(" Commander you missed the target. Recalibrate!\n");
+                        break;
+                        case 1: printf("Enemy missed the target");
+                        break;
+                    }
+
+                   
                arr_location[player_no][rows][columns]=-1;
+
                turn_change_flag =true;
 
-          }else if(arr_location[player_no][rows][columns]>0 &&arr_location[player_no][rows][columns]<=5){
+          }else if(arr_location[player_no][rows][columns]>1 &&arr_location[player_no][rows][columns]<=5){
+             switch(PLAYER_ID){
+                        case 0:   printf(" BULLSEYE! you hit the enemy ship");
+                        break;
+                        case 1: printf(" enemy hit the ship");
+                        break;
+                    }
+            
+
              ship_id=arr_location[player_no][rows][columns];
+
             
             
             
@@ -747,8 +779,17 @@ void manipulate_arrlocation(){
             
             arr_location[player_no][rows][columns]=99;
 
-              arr_ship_details[player_no][ship_id - 1][ship_size]-=1;
-              if(arr_ship_details[player_no][ship_id - 1][ship_size]==0){
+              arr_ship_details[player_no][ship_id - 2][ship_size]-=1;
+              if(arr_ship_details[player_no][ship_id - 2][ship_size]==0){
+               switch(PLAYER_ID){
+                        case 0:   printf(" You sunk their ship! congrats commander\n");
+                        break;
+                        case 1: printf(" enemy sunk the ship");
+                        break;
+                    }
+               
+               
+                
                 ship_sunk++;
               }
               
@@ -771,7 +812,7 @@ if (check_allship_sunk( player_no)){
 //ship_size = ship_id 
 bool  check_allship_sunk(int player_no){
    int flag=true;
-   for(int i=0 ;i<5;i++){
+   for(int i=0 ;i<4;i++){
 
     if (arr_ship_details[player_no][i][ship_size]== 0){
           
@@ -802,17 +843,16 @@ void turn_change(){
     if (turn_change_flag==true){
         switch(PLAYER_ID){
         case 0: PLAYER_ID=1;
+      
         break;
         case 1:PLAYER_ID=0;
+        
         break;
 
        } 
     }
     
 }
-
-
-
 
 
 int main(){
@@ -825,7 +865,7 @@ int main(){
     s3d_2d_sa(1,arr_ship_details,arr_ship_details_blu);
     ai_da(arr2_blu,arr_ship_details_blu);//to fill blu array of ships
     printf("\n\n\n AI \n\n\n");
-    spir(arr2_blu);
+    //spir(arr2_blu);
 
     s3d_2d_ma(0,arr_location,arr2_red);
     s3d_2d_sa(0,arr_ship_details,arr_ship_details_red);
