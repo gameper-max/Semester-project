@@ -132,7 +132,7 @@ bool  check_allship_sunk(int player_no){
    return flag;
 }
 int  winner_declare(int PLAYER_ID){
-    int winnner;
+    int winner;
     
        switch(PLAYER_ID){
         case 0: printf("You are winner");
