@@ -18,15 +18,15 @@ int arr_ship_details[2][5][3];
 int arr_ship_details_red[5][3];
 int arr_ship_details_blu[5][3];
 
-// --- CONSOLE IN-PLACE HELPERS ---
-void clear_screen() {
-    system("cls");
-}
+// --- CONSOLE IN-PLACE HELPERS ---//pop
+void clear_screen() {//pop
+    system("cls");//pop
+}//pop
 
-void reset_cursor() {
-    COORD coord = {0, 0};
+void reset_cursor() {//pop
+    COORD coord = {0, 0};//pop
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
+}//pop
 
 //moiz
 
@@ -448,7 +448,7 @@ bool turn_change_flag, game_end = false;
 int rows;
 int columns;
 // --- FUNCTION PROTOTYPES ---
-void getcord(int *r, int *c);
+void getcord(int *r, int *c);//pop
 void random_cordinate(int *r, int *c);
 void getcord_mechanism(int PLAYER_ID);
 void hit_input_mechanism(int player_no);
@@ -457,17 +457,17 @@ int winner_declare(int PLAYER_ID);
 void turn_change();
 void manipulate_arrlocation();
 // Updates both boards in-place and prints the outcome statement on the spot
-void render_live_boards(const char *turn_title, const char *statement) {
-reset_cursor();
+void render_live_boards(const char *turn_title, const char *statement) {//pop
+reset_cursor();//pop
 printf("%s                                        \n", turn_title);
-printf("--- ENEMY WATERS ---\n");
-displaycpuboard(arr_location);
-printf("\n--- YOUR FLEET ---\n");
-displayplayerboard(arr_location);
+printf("--- ENEMY WATERS ---\n");//pop
+displaycpuboard(arr_location);//pop
+printf("\n--- YOUR FLEET ---\n");//pop
+displayplayerboard(arr_location);//pop
 printf("\n-------------------------------------------------------------------\n");
-printf("OUTCOME: %-60s\n", statement);
+printf("OUTCOME: %-60s\n", statement);//pop
 printf("-------------------------------------------------------------------\n");
-}
+}//pop
 void getcord_mechanism(int PLAYER_ID) {
 switch (PLAYER_ID) {
 case 0: getcord(&rows, &columns);
@@ -490,7 +490,7 @@ getcord_mechanism(PLAYER_ID);
 }
 }
 }
-void manipulate_arrlocation() {
+void manipulate_arrlocation() {//pop somewhere idk
 turn_change_flag = false;
 int player_no = !PLAYER_ID;
 char outcome_msg[120] = "Awaiting coordinates...";
@@ -560,7 +560,7 @@ if (arr_ship_details[player_no][i][ship_size] == 0) {
 } else {
 flag = false;
 }
-}
+}//pop
 return flag;
 }
 int winner_declare(int PLAYER_ID) {
@@ -601,7 +601,7 @@ s2d_3d_ma(1, arr_location, arr2_blu);
 s2d_3d_sa(0, arr_ship_details, arr_ship_details_red);
 s2d_3d_sa(1, arr_ship_details, arr_ship_details_blu);
 clear_screen(); // Clear setup text once before battle starts
-while (!game_end) {
+while (!game_end) {//pop
 manipulate_arrlocation();
 if (!game_end) {
 turn_change();
