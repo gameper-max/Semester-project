@@ -1,8 +1,8 @@
 #include <stdio.h>  
 #include <ctype.h> 
-#include <stdio.h>
-#include<stdlib.h>
-
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #include <windows.h>
 #include <sys/time.h>
 
@@ -11,132 +11,121 @@
 #define YELLOW 14
 #define WHITE 7
 
+int arr_location[2][10][10];
+int arr2_red[10][10];
+int arr2_blu[10][10];
+int arr_ship_details[2][5][3];
+int arr_ship_details_red[5][3];
+int arr_ship_details_blu[5][3];
 
-    int arr_location[2][10][10];
-    int arr2_red[10][10];
-    int arr2_blu[10][10];
-    int arr_ship_details[2][5][3];
-    int arr_ship_details_red[5][3];
-    int arr_ship_details_blu[5][3];
-    
+// --- CONSOLE IN-PLACE HELPERS ---
+void clear_screen() {
+    system("cls");
+}
 
-    
+void reset_cursor() {
+    COORD coord = {0, 0};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 
 //moiz
 
-
-void getcord( int *row, int *col) { 
-   printf(" please enter your row for e.g. (B)\n");  
-   char inputr;  
-   int inputc;
-   int lettervalid; 
-   int numbervalid;
-   scanf(" %c",&inputr)  ;
-   inputr= toupper(inputr); 
-   if( inputr >='A' && inputr <='J') { 
-      lettervalid=0;
-   } else { 
-      do { 
-         printf(" please enter  a correct row \n") ;
-         scanf(" %c",&inputr); 
-         inputr=toupper(inputr);
-      } while(inputr < 'A' || inputr >'J');
-   }
-   printf(" please enter your column for e.g. (4)\n")  ;
-   scanf("%d",&inputc);  
-   if(inputc >= 1 && inputc<=10 ) {  
-      numbervalid =0 ; 
-      
-   } else { 
-      do { 
-         printf(" please enter a correct column ");  
-         scanf("%d",&inputc); 
-      } while(inputc < 1 || inputc > 10)  ;
-
-   }
-   *row=inputr - 'A'; 
-   *col=inputc - 1; 
-   
-   } 
-
+void getcord(int *row, int *col) { 
+    printf(" please enter your row for e.g. (B)\n");  
+    char inputr;  
+    int inputc;
+    int lettervalid; 
+    int numbervalid;
+    scanf(" %c", &inputr);
+    inputr = toupper(inputr); 
+    if (inputr >= 'A' && inputr <= 'J') { 
+        lettervalid = 0;
+    } else { 
+        do { 
+            printf(" please enter  a correct row \n");
+            scanf(" %c", &inputr); 
+            inputr = toupper(inputr);
+        } while (inputr < 'A' || inputr > 'J');
+    }
+    printf(" please enter your column for e.g. (4)\n");
+    scanf("%d", &inputc);  
+    if (inputc >= 1 && inputc <= 10) {  
+        numbervalid = 0; 
+    } else { 
+        do { 
+            printf(" please enter a correct column ");  
+            scanf("%d", &inputc); 
+        } while (inputc < 1 || inputc > 10);
+    }
+    *row = inputr - 'A'; 
+    *col = inputc - 1; 
+} 
 
 int getdir() {  
     int inputd; 
     printf(" please enter your direction { 0=Right,1=Down,2=Left,3=Up}\n");  
-    scanf("%d",&inputd);  
-    while(inputd<0 || inputd>3) { 
+    scanf("%d", &inputd);  
+    while (inputd < 0 || inputd > 3) { 
         printf(" please enter a valid direction \n"); 
-        scanf("%d",&inputd); 
+        scanf("%d", &inputd); 
     }  
-
     return inputd;
 }    
  
-void displayplayerboard(int dpbarr[2][10][10])  {  
-   //dpbz = layer
-     int i; 
-     int j;  
-     printf("    1  2  3  4  5  6  7  8  9  10\n");
-  for(i=0;i<10;i++){
-      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
-     printf("%c  ",'A'+i);
-    for(j=0;j<10;j++) {   
-         ; 
-        if( dpbarr[0][i][j] == 0) {  
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),BLUE);
-            printf(" . ");
-        } else if ( dpbarr[0][i][j]>=1 && dpbarr[0][i][j]<=5) 
-         { SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),WHITE);
-            printf(" S "); 
-        } else if ( dpbarr[0][i][j]==99) {  
-             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),RED);
-            printf(" X "); 
-
-        } else if ( dpbarr[0][i][j]== -1) {  
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),YELLOW);
-            printf(" O ");
-        }
-         
-
-    } printf("\n");
-  }
-  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
- } 
-
-
-//function that displays the users board
-
+void displayplayerboard(int dpbarr[2][10][10]) {  
+    int i; 
+    int j;  
+    printf("    1  2  3  4  5  6  7  8  9  10\n");
+    for (i = 0; i < 10; i++) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+        printf("%c  ", 'A' + i);
+        for (j = 0; j < 10; j++) {   
+            if (dpbarr[0][i][j] == 0) {  
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLUE);
+                printf(" . ");
+            } else if (dpbarr[0][i][j] >= 1 && dpbarr[0][i][j] <= 5) { 
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+                printf(" S "); 
+            } else if (dpbarr[0][i][j] == 99) {  
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+                printf(" X "); 
+            } else if (dpbarr[0][i][j] == -1) {  
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), YELLOW);
+                printf(" O ");
+            }
+        } 
+        printf("\n");
+    }
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+} 
 
 //DisplayCPUboard : 
-
 void displaycpuboard(int dcbarr[2][10][10]) { 
-   
     int i; 
     int j; 
     printf("   1  2  3  4  5  6  7  8  9  10\n"); 
-    for(i=0;i<10;i++) {
-         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
-        printf("%c ",'A'+i);
-        for(j=0;j<10;j++) { 
-            if(dcbarr[1][i][j]==0) { 
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),BLUE);
+    for (i = 0; i < 10; i++) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+        printf("%c ", 'A' + i);
+        for (j = 0; j < 10; j++) { 
+            if (dcbarr[1][i][j] == 0) { 
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLUE);
                 printf(" . ");
-            } if(dcbarr[1][i][j]==-1) {  
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),YELLOW);
+            } if (dcbarr[1][i][j] == -1) {  
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), YELLOW);
                 printf(" O ");
-            } if(dcbarr[1][i][j]==99) { 
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),RED);
+            } if (dcbarr[1][i][j] == 99) { 
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
                 printf(" X ");
-            } if(dcbarr[1][i][j]>=1 && dcbarr[1][i][j]<=5 ) {  
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),BLUE);
+            } if (dcbarr[1][i][j] >= 1 && dcbarr[1][i][j] <= 5) {  
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BLUE);
                 printf(" . ");
             }
-        } printf("\n");
-    
+        } 
+        printf("\n");
     }
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
- }
-
+}
 
 unsigned get_microseconds() {
     struct timeval tv;
@@ -144,829 +133,479 @@ unsigned get_microseconds() {
     return (tv.tv_sec * 1000000) + tv.tv_usec;
 }
 
-
-void rc(int *rc_row , int *rc_col){
+void rc(int *rc_row, int *rc_col) {
     srand(get_microseconds());
-    *rc_row = rand()%10;
-    Sleep(2);
-    *rc_col = rand()%10;
-    Sleep(2);
+    *rc_row = rand() % 10;
+    Sleep(8000);
+    *rc_col = rand() % 10;
+    Sleep(8000);
 }
 
-
-void random_cordinate(int *rac_row , int *rac_col){//pop
-  do { rc(rac_row,rac_col);}while(arr_location[0][*rac_row][*rac_col] == 99 || arr_location[0][*rac_row][*rac_col] == -1 );
-
+void random_cordinate(int *rac_row, int *rac_col) {
+    do { 
+        rc(rac_row, rac_col);
+    } while (arr_location[0][*rac_row][*rac_col] == 99 || arr_location[0][*rac_row][*rac_col] == -1);
 }
-
-
-
-/*
-{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}*/
-
-
 
 //Daniyal
 
-void board(int barr[2][10][10]){
-    int i,j,k;
-    for (k = 0; k<2; k++){
-        for (i = 0; i<=9; i++){
-            for (j = 0; j<=9; j++){
+void board(int barr[2][10][10]) {
+    int i, j, k;
+    for (k = 0; k < 2; k++) {
+        for (i = 0; i <= 9; i++) {
+            for (j = 0; j <= 9; j++) {
                 barr[k][i][j] = 0;
+            }
         }
     }
 }
 
+void sae(int saarr[5][3]) {
+    for (int j = 2; j <= 5; j++) {
+        saarr[j - 2][0] = (j) * 10;
+        saarr[j - 2][1] = j;
+    }
 }
 
-
-
-void sae(int saarr[5][3]){
-    //sae arr for direction live and Unique id 
-    //unique id at x axis 0 live at x axis 1 and direction at x axis 2
-
-    for(int j = 2;j <=5;j++){
-        saarr[j-2][0] = (j)*10;
-        saarr[j-2][1] = j;
-    
-}
-    
-}
-
-
-
-void s3d_2d_sa(int s3mz , int s3mzarr[2][5][3] , int s2mzarr[5][3]){
-    int i,j;
-    
-    for (i = 0; i<=4; i++){
-        
-        for (j = 0; j<=2; j++){
+void s3d_2d_sa(int s3mz, int s3mzarr[2][5][3], int s2mzarr[5][3]) {
+    int i, j;
+    for (i = 0; i <= 4; i++) {
+        for (j = 0; j <= 2; j++) {
             s2mzarr[i][j] = s3mzarr[s3mz][i][j];
-}}}
-
-
-void  s3d_2d_ma(int s3z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
-     int i,j;
-    //printf("\n\n");
-    for (i = 0; i<=9; i++){
-        
-        for (j = 0; j<=9; j++){
-        s2arr[i][j] = s3zarr[s3z][i][j];      
-    }
-        //printf("\n");
+        }
     }
 }
 
-
-int vd(int vdrow , int vdcol , int vdarr[10][10]){// 1111 = okay , 77 = not okay
-    if (vdarr[vdrow][vdcol] == 0){
-        return 1111;
+void s3d_2d_ma(int s3z, int s3zarr[2][10][10], int s2arr[10][10]) {
+    int i, j;
+    for (i = 0; i <= 9; i++) {
+        for (j = 0; j <= 9; j++) {
+            s2arr[i][j] = s3zarr[s3z][i][j];      
+        }
     }
-    
-    else if (vdarr[vdrow][vdcol] != 0){
+}
+
+int vd(int vdrow, int vdcol, int vdarr[10][10]) {
+    if (vdarr[vdrow][vdcol] == 0) {
+        return 1111;
+    } else {
         return 77;
     }
+}
 
+int sp(int sprow, int spcol, int spdir, int splen, int sparr[10][10]) {
+    int spi;
+    switch (spdir) {
+        case 0:
+            if ((spcol + splen - 1 >= 10))
+                return 444;
+            for (spi = 0; spi < splen; spi++) {
+                if (vd(sprow, spcol + spi, sparr) == 77)
+                    return 444;
+            }
+            for (spi = 0; spi < splen; spi++) {
+                sparr[sprow][spcol + spi] = splen;
+            }
+            break;
+
+        case 1:
+            if (sprow + splen - 1 >= 10)
+                return 444;
+            for (spi = 0; spi < splen; spi++) {
+                if (vd(sprow + spi, spcol, sparr) == 77)
+                    return 444;
+            }
+            for (spi = 0; spi < splen; spi++) {
+                sparr[sprow + spi][spcol] = splen;
+            }
+            break;
+
+        case 2:
+            if (spcol - (splen - 1) < 0)
+                return 444;
+            for (spi = 0; spi < splen; spi++) {
+                if (vd(sprow, spcol - spi, sparr) == 77)
+                    return 444;
+            }
+            for (spi = 0; spi < splen; spi++) {
+                sparr[sprow][spcol - spi] = splen;
+            }
+            break;
+
+        case 3:
+            if (sprow - (splen - 1) < 0)
+                return 444;
+            for (spi = 0; spi < splen; spi++) {
+                if (vd(sprow - spi, spcol, sparr) == 77)
+                    return 444;
+            }
+            for (spi = 0; spi < splen; spi++) {
+                sparr[sprow - spi][spcol] = splen;
+            }
+            break;
+
+        default:
+            return 444;
     }
-
-
-int sp(int sprow , int spcol , int spdir , int splen , int sparr[10][10]){//1010 = okay , 444 = not okay.  sp = ship placement spdir =(0 = right, 1 = down, 2 = left, 3 = up) , splen=ship length
-    //  type of ship that has splen e.g thre can be two ship if same length so this is to identify them
-    int spi,spj;
-    
-//if situation is to validte that the ship is not going out of board
-switch (spdir)
-{
-    // RIGHT
-    case 0:
-        if ((spcol + splen - 1 >= 10))
-            return 444;
-
-        for (spi = 0; spi < splen; spi++)
-        {
-            if (vd(sprow, spcol + spi,sparr) == 77)
-                return 444;
-        }
-
-        for (spi = 0; spi < splen; spi++)
-        {
-            sparr[sprow][spcol + spi] =  splen ;
-        }
-        break;
-
-
-    // DOWN
-    case 1:
-        if (sprow + splen - 1 >= 10)
-            return 444;
-
-        for (spi = 0; spi < splen; spi++)
-        {
-            if (vd(sprow + spi, spcol,sparr) == 77)
-                return 444;
-        }
-
-        for (spi = 0; spi < splen; spi++)
-        {
-            sparr[sprow + spi][spcol] =  splen ;
-        }
-        break;
-
-
-    // LEFT
-    case 2:
-        if (spcol - (splen - 1) < 0)
-            return 444;
-
-        for (spi = 0; spi < splen; spi++)
-        {
-            if (vd(sprow, spcol - spi,sparr) == 77)
-                return 444;
-        }
-
-        for (spi = 0; spi < splen; spi++)
-        {
-            sparr[sprow][spcol - spi] =  splen ;
-        }
-        break;
-
-
-    // UP
-    case 3:
-        if (sprow - (splen - 1) < 0)
-            return 444;
-
-        for (spi = 0; spi < splen; spi++)
-        {
-            if (vd(sprow - spi, spcol,sparr) == 77)
-                return 444;
-        }
-
-        for (spi = 0; spi < splen; spi++)
-        {
-            sparr[sprow - spi][spcol] =  splen ;
-        }
-        break;
-
-
-    default:
-        return 444;
+    return 1010;
 }
 
-return 1010;
-
-}
-
-
-void spir(int spiarr[10][10]){//array of ship print
-    int i,j;
+void spir(int spiarr[10][10]) {
+    int i, j;
     printf("\n\n");
-    for (i = 0; i<=9; i++){
-        
-        for (j = 0; j<=9; j++){
-            printf("%d\t",spiarr[i][j]);
-    }
+    for (i = 0; i <= 9; i++) {
+        for (j = 0; j <= 9; j++) {
+            printf("%d\t", spiarr[i][j]);
+        }
         printf("\n");
-    }}
+    }
+}
 
 void s2d_3d_ma(int s2z, int s3zarr[2][10][10], int s2arr[10][10]);
 
-void user_da(int uarr[10][10], int usae[5][3]){
+void user_da(int uarr[10][10], int usae[5][3]) {
     int urows, ucols;
-    int dir_s;//direction of submarine  
+    int dir_s;
     int dir_sps;
-    printf("\nEnter the Cordinate of Submarine LEn 5");
-    
-    do{
-    
-    getcord(&urows,&ucols);
-    dir_s = getdir();
-    dir_sps = sp(urows,ucols,dir_s,5,uarr);
-    
-    if (dir_sps == 444){
-        printf("\nEror");
-    }
-    }while(dir_sps == 444);
+    printf("\nEnter the Cordinate of Submarine LEn 5\n");
+    do {
+        getcord(&urows, &ucols);
+        dir_s = getdir();
+        dir_sps = sp(urows, ucols, dir_s, 5, uarr);
+        if (dir_sps == 444) {
+            printf("\nEror\n");
+        }
+    } while (dir_sps == 444);
     s2d_3d_ma(0, arr_location, uarr);
-     displayplayerboard(arr_location);
-
-    //spir(uarr);*saeed think no need
+    displayplayerboard(arr_location);
 
     int urowac, ucolac;
-    int dir_ac;//direction of aircraft carrier
+    int dir_ac;
     int dir_spac;
-    printf("\nEnter The cordinates OF Aircraft Craierr Len 4 : ");
-    
-    do{
-    
-        getcord(&urowac,&ucolac);
-    dir_ac = getdir();
-    dir_spac = sp(urowac,ucolac,dir_ac,4,uarr);
-    
-    if (dir_spac == 444){
-        printf("\nEror");
-    }
-    }while(dir_spac == 444);
-    //spir(uarr); ni needed
+    printf("\nEnter The cordinates OF Aircraft Craierr Len 4 : \n");
+    do {
+        getcord(&urowac, &ucolac);
+        dir_ac = getdir();
+        dir_spac = sp(urowac, ucolac, dir_ac, 4, uarr);
+        if (dir_spac == 444) {
+            printf("\nEror\n");
+        }
+    } while (dir_spac == 444);
     s2d_3d_ma(0, arr_location, uarr);
     displayplayerboard(arr_location);
-
 
     int urowd, ucold;
-    int dir_d;//direction of destroyer
+    int dir_d;
     int dir_spd;
-    printf("\nEnter The cordinates OF Destoryer Len 3 : ");
-    
-    do{
-    
-        getcord(&urowd,&ucold);
-    dir_d = getdir();
-    dir_spd = sp(urowd,ucold,dir_d,3,uarr);
-    
-    if (dir_spd == 444){
-        printf("\nEror...\n");
-    }
-    }while(dir_spd == 444);
+    printf("\nEnter The cordinates OF Destoryer Len 3 : \n");
+    do {
+        getcord(&urowd, &ucold);
+        dir_d = getdir();
+        dir_spd = sp(urowd, ucold, dir_d, 3, uarr);
+        if (dir_spd == 444) {
+            printf("\nEror...\n");
+        }
+    } while (dir_spd == 444);
     s2d_3d_ma(0, arr_location, uarr);
     displayplayerboard(arr_location);
-
-    
-    //spir(uarr); *saeed i dont think needed*
 
     int urowf, ucolf;
-    int dir_f;//direction of frigates
+    int dir_f;
     int dir_spf;
-    printf("\nEnter The cordinates OF Frigates Len 2 : ");
-    
-    do{
-    
-        getcord(&urowf,&ucolf);
-    dir_f = getdir();
-    dir_spf = sp(urowf,ucolf,dir_f,2,uarr);
-    
-    if (dir_spf == 444){
-        printf("\nEror");
-    }
-    }while(dir_spf == 444);
-    //spir(uarr);*saeed i dont think needed
+    printf("\nEnter The cordinates OF Frigates Len 2 : \n");
+    do {
+        getcord(&urowf, &ucolf);
+        dir_f = getdir();
+        dir_spf = sp(urowf, ucolf, dir_f, 2, uarr);
+        if (dir_spf == 444) {
+            printf("\nEror\n");
+        }
+    } while (dir_spf == 444);
     s2d_3d_ma(0, arr_location, uarr);
     displayplayerboard(arr_location);
 
-
-
-
     sae(usae);
-    //int usae[5];
     usae[0][2] = dir_f;
     usae[1][2] = dir_d;
     usae[2][2] = dir_ac;
     usae[3][2] = dir_s;
-
 }
 
-
-int dir_ai(){
+int dir_ai() {
     int d_ai;
-
     srand(get_microseconds());
-    Sleep(2);
-    d_ai = rand()%4;
-
-    return d_ai;}
-    
-
-int sp_ai(int sairow, int saicol, int sadir, int sa_len, int saiarr[10][10])
-{
-     int spi,spj;
-    
-//if situation is to validte that the ship is not going out of board
-switch (sadir)
-{
-    // RIGHT
-    case 0:
-        if ((saicol + sa_len - 1 >= 10))
-            return 444;
-
-        for (spi = 0; spi < sa_len; spi++)
-        {
-            if (vd(sairow, saicol + spi,saiarr) == 77)
-                return 444;
-        }
-
-        for (spi = 0; spi < sa_len; spi++)
-        {
-            saiarr[sairow][saicol + spi] =  sa_len ;
-        }
-        break;
-
-
-    // DOWN
-    case 1:
-        if (sairow + sa_len - 1 >= 10)
-            return 444;
-
-        for (spi = 0; spi < sa_len; spi++)
-        {
-            if (vd(sairow + spi, saicol,saiarr) == 77)
-                return 444;
-        }
-
-        for (spi = 0; spi < sa_len; spi++)
-        {
-            saiarr[sairow + spi][saicol] =  sa_len ;
-        }
-        break;
-
-
-    // LEFT
-    case 2:
-        if (saicol - (sa_len - 1) < 0)
-            return 444;
-
-        for (spi = 0; spi < sa_len; spi++)
-        {
-            if (vd(sairow, saicol - spi,saiarr) == 77)
-                return 444;
-        }
-
-        for (spi = 0; spi < sa_len; spi++)
-        {
-            saiarr[sairow][saicol - spi] =  sa_len ;
-        }
-        break;
-
-
-    // UP
-    case 3:
-        if (sairow - (sa_len - 1) < 0)
-            return 444;
-
-        for (spi = 0; spi < sa_len; spi++)
-        {
-            if (vd(sairow - spi, saicol,saiarr) == 77)
-                return 444;
-        }
-
-        for (spi = 0; spi < sa_len; spi++)
-        {
-            saiarr[sairow - spi][saicol] =  sa_len ;
-        }
-        break;
-
-
-    default:
-        return 444;
+    Sleep(8000);
+    d_ai = rand() % 4;
+    return d_ai;
 }
+    
+int sp_ai(int sairow, int saicol, int sadir, int sa_len, int saiarr[10][10]) {
+    int spi;
+    switch (sadir) {
+        case 0:
+            if ((saicol + sa_len - 1 >= 10))
+                return 444;
+            for (spi = 0; spi < sa_len; spi++) {
+                if (vd(sairow, saicol + spi, saiarr) == 77)
+                    return 444;
+            }
+            for (spi = 0; spi < sa_len; spi++) {
+                saiarr[sairow][saicol + spi] = sa_len;
+            }
+            break;
 
+        case 1:
+            if (sairow + sa_len - 1 >= 10)
+                return 444;
+            for (spi = 0; spi < sa_len; spi++) {
+                if (vd(sairow + spi, saicol, saiarr) == 77)
+return 444;
+}
+for (spi = 0; spi < sa_len; spi++) {
+saiarr[sairow + spi][saicol] = sa_len;
+}
+break;
+case 2:
+if (saicol - (sa_len - 1) < 0)
+return 444;
+for (spi = 0; spi < sa_len; spi++) {
+if (vd(sairow, saicol - spi, saiarr) == 77)
+return 444;
+}
+for (spi = 0; spi < sa_len; spi++) {
+saiarr[sairow][saicol - spi] = sa_len;
+}
+break;
+case 3:
+if (sairow - (sa_len - 1) < 0)
+return 444;
+for (spi = 0; spi < sa_len; spi++) {
+if (vd(sairow - spi, saicol, saiarr) == 77)
+return 444;
+}
+for (spi = 0; spi < sa_len; spi++) {
+saiarr[sairow - spi][saicol] = sa_len;
+}
+break;
+default:
+return 444;
+}
 return 1010;
 }
-
-
-void ai_da(int spafarr[10][10] , int aisae[5][3]){//all ship
-// name before = sp_ai = ship placement ai final
-
-    // len 5 = submarine
-    int sp_afsrow, sp_afscol, sp_aifsdir, sp_afs_spai;
-    
-    do{
-        sp_aifsdir = dir_ai();
-        rc(&sp_afsrow,&sp_afscol);
-        sp_afs_spai = sp_ai(sp_afsrow, sp_afscol, sp_aifsdir, 5, spafarr);
-    }while(sp_afs_spai == 444);
-
-
-
-// len 4  = aircraft carier
-    int sp_afarow, sp_afacol, sp_afadir, sp_afa_spai;
-    
-    do{
-        sp_afadir = dir_ai();
-        rc(&sp_afarow,&sp_afacol);
-        sp_afa_spai = sp_ai(sp_afarow, sp_afacol, sp_afadir , 4, spafarr);
-    }while(sp_afa_spai == 444);
-
-
-
-// len 3 = destroyer
-    int sp_afdrow, sp_afdcol, sp_afddir, sp_afd_spai;
-    
-    do{
-        sp_afddir = dir_ai();
-        rc(&sp_afdrow,&sp_afdcol);
-        sp_afd_spai = sp_ai(sp_afdrow, sp_afdcol, sp_afddir , 3, spafarr);
-    }while(sp_afd_spai == 444 );
-
-
-
-// len 2 = frigates
-    int sp_affrow, sp_affcol, sp_affdir, sa_aff_spai;
-    
-    do{
-    sp_affdir = dir_ai();
-    rc(&sp_affrow,&sp_affcol);
-    sa_aff_spai = sp_ai(sp_affrow, sp_affcol, sp_affdir , 2, spafarr);
-    }while(sa_aff_spai == 444);
-
-    sae(aisae);
-    //int aisae[5];
-    aisae[0][2] = sp_affdir;
-    aisae[1][2] = sp_afddir;
-    aisae[2][2] = sp_afadir;
-    aisae[3][2] = sp_aifsdir;
-
-
+void ai_da(int spafarr[10][10], int aisae[5][3]) {
+int sp_afsrow, sp_afscol, sp_aifsdir, sp_afs_spai;
+do {
+sp_aifsdir = dir_ai();
+rc(&sp_afsrow, &sp_afscol);
+sp_afs_spai = sp_ai(sp_afsrow, sp_afscol, sp_aifsdir, 5, spafarr);
+} while (sp_afs_spai == 444);
+int sp_afarow, sp_afacol, sp_afadir, sp_afa_spai;
+do {
+sp_afadir = dir_ai();
+rc(&sp_afarow, &sp_afacol);
+sp_afa_spai = sp_ai(sp_afarow, sp_afacol, sp_afadir, 4, spafarr);
+} while (sp_afa_spai == 444);
+int sp_afdrow, sp_afdcol, sp_afddir, sp_afd_spai;
+do {
+sp_afddir = dir_ai();
+rc(&sp_afdrow, &sp_afdcol);
+sp_afd_spai = sp_ai(sp_afdrow, sp_afdcol, sp_afddir, 3, spafarr);
+} while (sp_afd_spai == 444);
+int sp_affrow, sp_affcol, sp_affdir, sa_aff_spai;
+do {
+sp_affdir = dir_ai();
+rc(&sp_affrow, &sp_affcol);
+sa_aff_spai = sp_ai(sp_affrow, sp_affcol, sp_affdir, 2, spafarr);
+} while (sa_aff_spai == 444);
+sae(aisae);
+aisae[0][2] = sp_affdir;
+aisae[1][2] = sp_afddir;
+aisae[2][2] = sp_afadir;
+aisae[3][2] = sp_aifsdir;
 }
-
-
-
-void s2d_3d_sa(int s2mz , int s3mzarr[2][5][3] , int s2mzarr[5][3]){
-    int i,j;
-    
-    for (i = 0; i<=4; i++){
-        
-        for (j = 0; j<=2; j++){
-            s3mzarr[s2mz][i][j] = s2mzarr[i][j];
-}}}
-
-
-void  s2d_3d_ma(int s2z, int s3zarr[2][10][10], int s2arr[10][10]){//3d into 2d
-     int i,j;
-    //printf("\n\n");
-    for (i = 0; i<=9; i++){
-        
-        for (j = 0; j<=9; j++){
-        s3zarr[s2z][i][j] = s2arr[i][j];      
-    }
-        //printf("\n");
-    }
+void s2d_3d_sa(int s2mz, int s3mzarr[2][5][3], int s2mzarr[5][3]) {
+int i, j;
+for (i = 0; i <= 4; i++) {
+for (j = 0; j <= 2; j++) {
+s3mzarr[s2mz][i][j] = s2mzarr[i][j];
 }
-
-
-/*
-{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}*/
-
-
-#include<stdio.h>
-#include<string.h>
-#include <stdbool.h>
-int ship_id; // most imp step global pointer toa cccess everytwhere
-int ship_sunk=0;
-int ship_size=1;//danail will tell column no in arr_ship_details
+}
+}
+void s2d_3d_ma(int s2z, int s3zarr[2][10][10], int s2arr[10][10]) {
+int i, j;
+for (i = 0; i <= 9; i++) {
+for (j = 0; j <= 9; j++) {
+s3zarr[s2z][i][j] = s2arr[i][j];
+}
+}
+}
+// Saeed's Game Engine
+int ship_id;
+int ship_sunk = 0;
+int ship_size = 1;
 int PLAYER_ID = 0;
-bool  turn_change_flag, game_end=false;
- 
-// concept if ship hit write x otherwise  write -1 and 
-// manipulate it in main  arr_location
-// if locatrion already 99 or -1 do again thrpugh a flagcheck
-// if cell 0 or any number btw 0 and 9 thren do hit or miss 
-// turn base system 
-
-int rows;//gets row user hits 
-int columns;            //gets colums user hits
-
-// take input modulele for hit to get thrpughh getcoords() provided by moiz
-//  hit_coords sepertae them using kast and first digit mod logic
+bool turn_change_flag, game_end = false;
+int rows;
+int columns;
 // --- FUNCTION PROTOTYPES ---
-
-// Moiz's  cord generator's prototype 
 void getcord(int *r, int *c);
 void random_cordinate(int *r, int *c);
-
-// Saeed's game_engine's prototypes for all functions 
 void getcord_mechanism(int PLAYER_ID);
 void hit_input_mechanism(int player_no);
 bool check_allship_sunk(int player_no);
 int winner_declare(int PLAYER_ID);
 void turn_change();
 void manipulate_arrlocation();
-
- 
-void getcord_mechanism(int PLAYER_ID) {  
-    switch(PLAYER_ID) { 
-        case 0: getcord(&rows,&columns);    
-        break;
-        case 1: random_cordinate(&rows,&columns); 
-        break;
-    }
-
+// Updates both boards in-place and prints the outcome statement on the spot
+void render_live_boards(const char *turn_title, const char *statement) {
+reset_cursor();
+printf("%s                                        \n", turn_title);
+printf("--- ENEMY WATERS ---\n");
+displaycpuboard(arr_location);
+printf("\n--- YOUR FLEET ---\n");
+displayplayerboard(arr_location);
+printf("\n-------------------------------------------------------------------\n");
+printf("OUTCOME: %-60s\n", statement);
+printf("-------------------------------------------------------------------\n");
 }
- 
-void  hit_input_mechanism(int player_no){
-    bool is_input=true;
-    
-     getcord_mechanism(PLAYER_ID);
-    while(is_input== true){
-              //  imp supposed five ships here be aware!!!!!!  imp
-        if( arr_location[player_no][rows][columns] ==0 || (arr_location[player_no][rows][columns] >=2 && arr_location[player_no][rows][columns] <=5 )){
-                is_input= false;
-     
-      
-        }else{ 
-            getcord_mechanism(PLAYER_ID); 
-
-           
-
-        }
-      
+void getcord_mechanism(int PLAYER_ID) {
+switch (PLAYER_ID) {
+case 0: getcord(&rows, &columns);
+break;
+case 1: random_cordinate(&rows, &columns);
+break;
 }
 }
-/*int hit_input_rows(){       
-    int user_input=getcoords();
-    int rows =user_input%10;
-  
-    return rows;
-
+void hit_input_mechanism(int player_no) {
+bool is_input = true;
+getcord_mechanism(PLAYER_ID);
+while (is_input == true) {
+if (arr_location[player_no][rows][columns] == 0 || (arr_location[player_no][rows][columns] >= 2 && arr_location[player_no][rows][columns] <= 5)) {
+is_input = false;
+} else {
+if (PLAYER_ID == 0) {
+printf("Already targeted! Enter another coordinate:\n");
 }
-int hit_input_columns(){
-    user_input/=10;
-    int columns=user_input%10;
-}  // &rows and &columns / */
-void manipulate_arrlocation(){
-  // i for inavlid target(eiher overlapping or out of bound ) , h for hit target and w for water 
-    /*liten call correct  most impcorrection add parametres paramatres */
-        turn_change_flag=false;
-        int player_no =!PLAYER_ID;
-         do {
-             
-             // i for inavlid target(either overlapping or out of bound ) , h for hit target and w for water 
-            
-              
-
-               /*liten call correct */hit_input_mechanism(player_no);/*most impcorrection add parametres paramatres*/
-               if(PLAYER_ID==0){
-                   printf("\n\n\n\n\n\n\n\n******-------------Your turn----------------******\n\n ");
-               }else{
-                printf("\n\n\n\n\n\n\n\n *********----------------enemy turn-----------------*******\n\n");
-               }
-                if (arr_location[player_no][rows][columns]==0){
-                    switch(PLAYER_ID){
-                        case 0:   printf("\n\n outcome:Commander you missed the target. Recalibrate!\n\n\n\n ");
-                        break;
-                        case 1: printf("\n\noutcomeEnemy missed the target\n\n\n\n");
-                        break;
-                    }
-
-                   
-               arr_location[player_no][rows][columns]=-1;
-
-               turn_change_flag =true;
-
-          }else if(arr_location[player_no][rows][columns]>1 &&arr_location[player_no][rows][columns]<=5){
-             switch(PLAYER_ID){
-                        case 0:   
-                        printf(" \n\nBULLSEYE! you hit the enemy ship\n\n");
-                        break;
-
-                        case 1:  printf(" \n\nenemy hit the ship\n\n");
-                        break;
-                    }
-            
-
-             ship_id=arr_location[player_no][rows][columns];
-
-            
-            
-            
-            
-            
-            arr_location[player_no][rows][columns]=99;
-
-              arr_ship_details[player_no][ship_id - 2][ship_size]-=1;
-              if(arr_ship_details[player_no][ship_id - 2][ship_size]==0){
-               switch(PLAYER_ID){
-                        case 0:   printf(" \n\nYou sunk their ship! congrats commander\n\n");
-                        break;
-                        case 1: printf(" \n\nenemy sunk the ship\n\n");
-                        break;
-                    }
-               
-               
-                
-                ship_sunk++;
-              }
-             
-                    
-              
-          }
-           switch(player_no){
-            case 0: 
-            printf(" \n\n            AFTER CURRENT TURN:\n\n");
-            displayplayerboard(arr_location);
-
-            break;
-            case 1:("\n\n\n           AFTER CURRENT TURN:\n\n\n");
-            displaycpuboard(arr_location);
-
-            break;
-        }
-        if(turn_change_flag==true){
-              printf("******----------------turn change------------********");
-        }else{
-            printf("*******----------Another turn---------*********");
-        }
-          
-         }while(!check_allship_sunk( player_no) &&  turn_change_flag==false);             
-             
-    
-if (check_allship_sunk( player_no)){
-    game_end=true;
-    winner_declare(PLAYER_ID);
-
+getcord_mechanism(PLAYER_ID);
 }
-
-         
-
-
 }
-// later initIALIZEPLAYER_ID AND SHIP)ID ACCORIDING TO INDEX USED BY DAINAL IN MAIN
-// concept to make or acccess ship_id at that  point
-//ship_size = ship_id 
-bool  check_allship_sunk(int player_no){
-   int flag=true;
-   for(int i=0 ;i<4;i++){
-
-    if (arr_ship_details[player_no][i][ship_size]== 0){
-          
-   }else{
-      flag =false;
-   }
 }
-   return flag;
+void manipulate_arrlocation() {
+turn_change_flag = false;
+int player_no = !PLAYER_ID;
+char outcome_msg[120] = "Awaiting coordinates...";
+do {
+if (PLAYER_ID == 0) {
+render_live_boards("-------------Your turn----------------", outcome_msg);
+} else {
+render_live_boards("**----------------enemy turn-----------------", "Enemy is aiming...");
+Sleep(8000);
 }
-int  winner_declare(int PLAYER_ID){
-    int winner;
-    
-       switch(PLAYER_ID){
-        case 0: printf("You are winner");
-               winner=0;
-               break;
-        case 1: printf("BOT is winnner ");
-               winner =1;
-               break;
-
-       
-
-    }
-    return winner ;
+hit_input_mechanism(player_no);
+if (arr_location[player_no][rows][columns] == 0) {
+arr_location[player_no][rows][columns] = -1;
+turn_change_flag = true;
+switch (PLAYER_ID) {
+case 0:
+sprintf(outcome_msg, "Commander you missed the target. Recalibrate! | turn change");
+break;
+case 1:
+sprintf(outcome_msg, "Enemy missed the target | turn change");
+break;
 }
-
-void turn_change(){
-    if (turn_change_flag==true){
-        switch(PLAYER_ID){
-        case 0: PLAYER_ID=1;
-      
-        break;
-        case 1:PLAYER_ID=0;
-        
-        break;
-
-       } 
-    }
-    
+} else if (arr_location[player_no][rows][columns] > 1 && arr_location[player_no][rows][columns] <= 5) {
+ship_id = arr_location[player_no][rows][columns];
+arr_location[player_no][rows][columns] = 99;
+arr_ship_details[player_no][ship_id - 2][ship_size] -= 1;
+if (arr_ship_details[player_no][ship_id - 2][ship_size] == 0) {
+ship_sunk++;
+switch (PLAYER_ID) {
+case 0:
+sprintf(outcome_msg, "You sunk their ship! congrats commander | Another turn");
+break;
+case 1:
+sprintf(outcome_msg, "Enemy sunk the ship! | Another turn");
+break;
 }
-
-
-int main(){
-
-
-
-    board(arr_location);//places water everywhere
-     
-    s3d_2d_ma(0,arr_location,arr2_red);// arr location 3d to 2d converter 
-    s3d_2d_sa(0,arr_ship_details,arr_ship_details_red);// same as above
-    user_da(arr2_red,arr_ship_details_red); // changes in it needed 
-    
-    //spir(arr2_red);// ship_layout of user //display_player_board
-    
-
-
-    s3d_2d_ma(1,arr_location,arr2_blu);//retreving blu from 3d
-    s3d_2d_sa(1,arr_ship_details,arr_ship_details_blu);//
-    ai_da(arr2_blu,arr_ship_details_blu); // changes in it needed
-      
-    //spir(arr2_blu);// print ai turn   //display_cpu tesung purpose backend logic chcek
-    //displaycpuboard(arr_location); *****(saeed) i dont think needded***
-
-
-    //saed
-
-
-
-
-    //stiching back 
-
-    s2d_3d_ma(0,arr_location,arr2_red);
-    s2d_3d_ma(1,arr_location,arr2_blu);
-
-    s2d_3d_sa(0,arr_ship_details,arr_ship_details_red);
-    s2d_3d_sa(1,arr_ship_details,arr_ship_details_blu);
-
-    while(!game_end){
-         
-                
-                printf("\n--- ENEMY WATERS ---\n");
-                printf("\n\n");
-                displaycpuboard(arr_location);
-                printf("\n\n");
-                printf("\n--- YOUR FLEET ---\n");
-                printf("\n\n");
-                 displayplayerboard(arr_location);
-                 printf("\n\n");
-              
-        manipulate_arrlocation();
-       
-        if(!game_end){
-            turn_change();
-            
-        }
-    }
-    
-    return 0;
-
-
+} else {
+switch (PLAYER_ID) {
+case 0:
+sprintf(outcome_msg, "BULLSEYE! you hit the enemy ship | Another turn");
+break;
+case 1:
+sprintf(outcome_msg, "Enemy hit the ship | Another turn");
+break;
 }
-// for calling user func
-// 
+}
+}
+// Instantly update the array on screen at the exact same spot with the outcome statement
+if (PLAYER_ID == 0) {
+render_live_boards("-------------Your turn----------------", outcome_msg);
+} else {
+render_live_boards("**----------------enemy turn-----------------", outcome_msg);
+}
+Sleep(8000);
+clear_screen();
+} while (!check_allship_sunk(player_no) && turn_change_flag == false);
+if (check_allship_sunk(player_no)) {
+game_end = true;
+render_live_boards("*************** GAME OVER ***************", outcome_msg);
+winner_declare(PLAYER_ID);
+}
+}
+bool check_allship_sunk(int player_no) {
+int flag = true;
+for (int i = 0; i < 4; i++) {
+if (arr_ship_details[player_no][i][ship_size] == 0) {
+} else {
+flag = false;
+}
+}
+return flag;
+}
+int winner_declare(int PLAYER_ID) {
+int winner;
+switch (PLAYER_ID) {
+case 0:
+printf("\nYou are winner\n");
+winner = 0;
+break;
+case 1:
+printf("\nBOT is winner\n");
+winner = 1;
+break;
+}
+return winner;
+}
+void turn_change() {
+if (turn_change_flag == true) {
+switch (PLAYER_ID) {
+case 0: PLAYER_ID = 1;
+break;
+case 1: PLAYER_ID = 0;
+break;
+}
+}
+}
+int main() {
+board(arr_location); // places water everywhere
+s3d_2d_ma(0, arr_location, arr2_red);
+s3d_2d_sa(0, arr_ship_details, arr_ship_details_red);
+user_da(arr2_red, arr_ship_details_red);
+s3d_2d_ma(1, arr_location, arr2_blu);
+s3d_2d_sa(1, arr_ship_details, arr_ship_details_blu);
+ai_da(arr2_blu, arr_ship_details_blu);
+// stitching back
+s2d_3d_ma(0, arr_location, arr2_red);
+s2d_3d_ma(1, arr_location, arr2_blu);
+s2d_3d_sa(0, arr_ship_details, arr_ship_details_red);
+s2d_3d_sa(1, arr_ship_details, arr_ship_details_blu);
+clear_screen(); // Clear setup text once before battle starts
+while (!game_end) {
+manipulate_arrlocation();
+if (!game_end) {
+turn_change();
+}
+}
+return 0;
+}
