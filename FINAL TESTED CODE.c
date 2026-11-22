@@ -28,7 +28,7 @@ void reset_cursor() {//pop
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }//pop
 
-//moiz
+
 void save_results(int winner) { 
     FILE *file ;  
     file = fopen("match history.txt", "a"); 
@@ -165,7 +165,7 @@ void random_cordinate(int *rac_row, int *rac_col) {
     } while (arr_location[0][*rac_row][*rac_col] == 99 || arr_location[0][*rac_row][*rac_col] == -1);
 }
 
-//Daniyal
+
 
 void board(int barr[2][10][10]) {
     int i, j, k;
@@ -457,7 +457,7 @@ s3zarr[s2z][i][j] = s2arr[i][j];
 }
 }
 }
-// Saeed's Game Engine
+
 int ship_id;
 int ship_sunk = 0;
 int ship_size = 1;
